@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react'
 import { CATEGORIES } from '../../data/words.js'
 import { CATEGORIES_ES } from '../../data/words_es.js'
+import { CATEGORIES_PT } from '../../data/words_pt.js'
 import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
 
@@ -10,7 +11,7 @@ export default function ImposterGuessScreen({ state, actions }) {
   const { players, imposterIndices, selectedCategories } = state
   const imposterNames = imposterIndices.map(i => players[i]).join(' & ')
 
-  const categories = lang === 'es' ? CATEGORIES_ES : CATEGORIES
+  const categories = lang === 'es' ? CATEGORIES_ES : lang === 'pt' ? CATEGORIES_PT : CATEGORIES
   const wordPool = [...new Set(selectedCategories.flatMap(k => categories[k].words.map(w => w.word)))].sort()
 
   return (

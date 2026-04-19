@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { pickWord, pickImposter } from '../utils/gameLogic.js'
 import { CATEGORIES } from '../data/words.js'
 import { CATEGORIES_ES } from '../data/words_es.js'
+import { CATEGORIES_PT } from '../data/words_pt.js'
 
 function loadSettings() {
   try {
@@ -80,7 +81,7 @@ export function useGameState(lang = 'en') {
   }
 
   function startGame() {
-    const categories = lang === 'es' ? CATEGORIES_ES : CATEGORIES
+    const categories = lang === 'es' ? CATEGORIES_ES : lang === 'pt' ? CATEGORIES_PT : CATEGORIES
     setState(s => {
       const secretWord = pickWord(s.selectedCategories, categories)
       const imposterIndices = pickImposter(s.players.length, s.imposterCount)

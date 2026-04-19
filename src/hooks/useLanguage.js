@@ -2,7 +2,8 @@ import { useState } from 'react'
 
 function detectLang() {
   const saved = localStorage.getItem('imposter_language')
-  if (saved === 'en' || saved === 'es') return saved
+  if (saved === 'en' || saved === 'es' || saved === 'pt') return saved
+  if (navigator.language?.startsWith('pt')) return 'pt'
   return navigator.language?.startsWith('es') ? 'es' : 'en'
 }
 
