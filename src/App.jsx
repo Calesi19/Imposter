@@ -20,5 +20,11 @@ export default function App() {
     GAME_OVER: <GameOverScreen state={state} actions={actions} />,
   }
 
-  return screens[state.phase] ?? null
+  return (
+    <div className="min-h-screen bg-apple-gray-50 sm:flex sm:justify-center">
+      <div className="w-full sm:max-w-sm sm:min-h-screen overflow-hidden relative">
+        {screens[state.phase]}
+      </div>
+    </div>
+  )
 }
