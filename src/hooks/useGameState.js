@@ -1,10 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { pickWord, pickImposter } from '../utils/gameLogic.js'
+
+function loadSettings() {
+  try {
+    return {
+      players: JSON.parse(localStorage.getItem('imposter_players') ?? '[]'),
+      selectedCategories: JSON.parse(localStorage.getItem('imposter_categories') ?? '[]'),
+    }
+  } catch {
+    return { players: [], selectedCategories: [] }
+  }
+}
+
+const saved = loadSettings()
 
 const initialState = {
   phase: 'SETUP',
-  players: [],
-  selectedCategories: [],
+  players: saved.players,
+  selectedCategories: saved.selectedCategories,
   secretWord: '',
   imposterIndex: -1,
   revealStep: 0,
@@ -13,6 +26,14 @@ const initialState = {
 
 export function useGameState() {
   const [state, setState] = useState(initialState)
+
+  useEffect(() => {
+    localStorage.setItem('imposter_players', JSON.stringify(state.players))
+  }, [state.players])
+
+  useEffect(() => {
+    localStorage.setItem('imposter_categories', JSON.stringify(state.selectedCategories))
+  }, [state.selectedCategories])
 
   function addPlayer(name) {
     const trimmed = name.trim()
@@ -71,7 +92,11 @@ export function useGameState() {
   }
 
   function resetGame() {
-    setState({ ...initialState })
+    setState(s => ({
+      ...initialState,
+      players: s.players,
+      selectedCategories: s.selectedCategories,
+    }))
   }
 
   return {
