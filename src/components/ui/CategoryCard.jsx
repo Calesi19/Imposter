@@ -2,14 +2,14 @@ export default function CategoryCard({ label, emoji, selected, onToggle }) {
   return (
     <button
       onClick={onToggle}
-      className={`flex flex-col items-center justify-center gap-1 p-4 rounded-2xl border-2 transition-all active:scale-95 select-none min-h-[80px] ${
+      className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl border-2 transition-all duration-150 active:scale-95 select-none min-h-[76px] ${
         selected
-          ? 'border-indigo-500 bg-indigo-900/50 text-indigo-200'
-          : 'border-slate-700 bg-slate-800 text-slate-400 hover:border-slate-500'
+          ? 'border-apple-blue bg-white text-apple-blue'
+          : 'border-apple-gray-200 bg-white text-apple-gray-500'
       }`}
     >
       <span className="text-2xl">{emoji}</span>
-      <span className="text-xs font-medium">{label}</span>
+      <span className="text-[12px] font-medium leading-tight">{label}</span>
     </button>
   )
 }

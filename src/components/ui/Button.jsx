@@ -1,10 +1,10 @@
 export default function Button({ children, onClick, variant = 'primary', disabled = false, className = '' }) {
-  const base = 'w-full min-h-[56px] rounded-2xl font-semibold text-lg select-none transition-all active:scale-95 disabled:opacity-40 disabled:pointer-events-none'
+  const base = 'w-full min-h-[50px] rounded-xl font-medium text-[17px] select-none transition-all duration-150 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none tracking-tight'
   const variants = {
-    primary: 'bg-indigo-600 text-white hover:bg-indigo-500',
-    secondary: 'bg-slate-700 text-slate-100 hover:bg-slate-600',
-    danger: 'bg-red-700 text-white hover:bg-red-600',
-    ghost: 'bg-transparent text-slate-400 hover:text-slate-200',
+    primary: 'bg-apple-blue text-white',
+    secondary: 'bg-white text-apple-label border border-apple-gray-200',
+    danger: 'bg-apple-red text-white',
+    ghost: 'bg-transparent text-apple-blue',
   }
   return (
     <button

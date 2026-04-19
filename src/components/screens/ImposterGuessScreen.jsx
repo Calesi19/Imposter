@@ -10,14 +10,12 @@ export default function ImposterGuessScreen({ state, actions }) {
   const wordPool = [...new Set(selectedCategories.flatMap(k => CATEGORIES[k].words))].sort()
 
   return (
-    <div className="min-h-dvh min-h-screen bg-slate-900 flex flex-col">
-      <div className="flex-1 overflow-y-auto px-4 pt-10 pb-6">
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-red-900/50 flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">🕵️</span>
-          </div>
-          <h2 className="text-2xl font-bold text-slate-100">{imposterName}'s Last Chance</h2>
-          <p className="text-slate-400 mt-1 text-sm">Guess the secret word to win</p>
+    <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
+      <div className="flex-1 overflow-y-auto px-5 pt-12 pb-6">
+        <div className="text-center mb-8 space-y-1">
+          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">Last Chance</p>
+          <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{imposterName}, guess the word</h2>
+          <p className="text-apple-gray-500 text-[15px]">Guess correctly to win</p>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
@@ -25,10 +23,10 @@ export default function ImposterGuessScreen({ state, actions }) {
             <button
               key={word}
               onClick={() => setSelected(word)}
-              className={`min-h-[48px] rounded-xl text-sm font-medium transition-all active:scale-95 select-none px-3 py-2 ${
+              className={`min-h-[48px] rounded-xl text-[15px] font-medium transition-all duration-150 active:scale-95 select-none px-3 py-3 border ${
                 selected === word
-                  ? 'bg-indigo-600 text-white border-2 border-indigo-400'
-                  : 'bg-slate-800 text-slate-300 border-2 border-transparent hover:border-slate-600'
+                  ? 'bg-apple-blue text-white border-apple-blue'
+                  : 'bg-white text-apple-label border-apple-gray-200'
               }`}
             >
               {word}
@@ -37,7 +35,7 @@ export default function ImposterGuessScreen({ state, actions }) {
         </div>
       </div>
 
-      <div className="px-4 pb-8 pt-2">
+      <div className="px-5 pb-10 pt-3 border-t border-apple-gray-200 bg-apple-gray-50">
         <Button
           onClick={() => actions.submitImposterGuess(selected)}
           disabled={!selected}
