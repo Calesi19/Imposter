@@ -82,6 +82,64 @@ export default function SetupScreen({ state, actions }) {
             <p className="text-apple-gray-300 text-[13px]">Select at least one theme</p>
           )}
         </section>
+
+        {/* Imposters */}
+        <section className="space-y-3">
+          <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-400">
+            Imposters
+          </h2>
+          <div className="bg-white border border-apple-gray-200 rounded-2xl px-4 py-3 flex items-center justify-between">
+            <span className="text-apple-label text-[17px]">Number of Imposters</span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => actions.setImposterCount(state.imposterCount - 1)}
+                disabled={state.imposterCount <= 0}
+                className="w-8 h-8 rounded-full bg-apple-gray-100 flex items-center justify-center text-apple-label text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
+                aria-label="Decrease imposter count"
+              >
+                −
+              </button>
+              <span className="text-apple-label text-[20px] font-semibold w-6 text-center select-none">
+                {state.imposterCount}
+              </span>
+              <button
+                onClick={() => actions.setImposterCount(state.imposterCount + 1)}
+                disabled={state.imposterCount >= 25}
+                className="w-8 h-8 rounded-full bg-apple-gray-100 flex items-center justify-center text-apple-label text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
+                aria-label="Increase imposter count"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Options */}
+        <section className="space-y-3">
+          <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-400">
+            Options
+          </h2>
+          <div className="bg-white border border-apple-gray-200 rounded-2xl px-4 py-3 flex items-center justify-between">
+            <div>
+              <p className="text-apple-label text-[17px]">Imposter Hints</p>
+              <p className="text-apple-gray-400 text-[13px] mt-0.5">Imposters get a subtle clue during reveal</p>
+            </div>
+            <button
+              onClick={actions.toggleShowHints}
+              role="switch"
+              aria-checked={state.showHints}
+              className={`relative w-[51px] h-[31px] rounded-full transition-colors duration-200 focus:outline-none flex-shrink-0 ml-4 ${
+                state.showHints ? 'bg-apple-blue' : 'bg-apple-gray-200'
+              }`}
+            >
+              <span
+                className={`absolute top-[2px] left-[2px] w-[27px] h-[27px] bg-white rounded-full shadow-sm transition-transform duration-200 ${
+                  state.showHints ? 'translate-x-[20px]' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
+        </section>
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 px-5 pb-10 pt-4 bg-apple-gray-50/90 backdrop-blur-sm">

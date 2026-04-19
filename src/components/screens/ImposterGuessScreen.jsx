@@ -4,17 +4,17 @@ import Button from '../ui/Button.jsx'
 
 export default function ImposterGuessScreen({ state, actions }) {
   const [selected, setSelected] = useState('')
-  const { players, imposterIndex, selectedCategories } = state
-  const imposterName = players[imposterIndex]
+  const { players, imposterIndices, selectedCategories } = state
+  const imposterNames = imposterIndices.map(i => players[i]).join(' & ')
 
-  const wordPool = [...new Set(selectedCategories.flatMap(k => CATEGORIES[k].words))].sort()
+  const wordPool = [...new Set(selectedCategories.flatMap(k => CATEGORIES[k].words.map(w => w.word)))].sort()
 
   return (
     <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
       <div className="flex-1 overflow-y-auto px-5 pt-12 pb-6">
         <div className="text-center mb-8 space-y-1">
           <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">Last Chance</p>
-          <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{imposterName}, guess the word</h2>
+          <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{imposterNames}, guess the word</h2>
           <p className="text-apple-gray-500 text-[15px]">Guess correctly to win</p>
         </div>
 

@@ -1,7 +1,7 @@
 export default function WordRevealScreen({ state, actions }) {
-  const { players, revealStep, revealPhase, imposterIndex, secretWord } = state
+  const { players, revealStep, revealPhase, imposterIndices, secretWord, showHints } = state
   const currentPlayer = players[revealStep]
-  const isImposter = revealStep === imposterIndex
+  const isImposter = imposterIndices.includes(revealStep)
   const isLastPlayer = revealStep === players.length - 1
 
   return (
@@ -25,14 +25,20 @@ export default function WordRevealScreen({ state, actions }) {
               <h2 className="text-[36px] font-semibold tracking-tight text-apple-red leading-tight">
                 You are the<br />Imposter.
               </h2>
-              <p className="text-apple-gray-400 text-[15px] max-w-[260px] mx-auto leading-relaxed">
-                Blend in. Don't reveal you don't know the word.
-              </p>
+              {showHints ? (
+                <p className="text-apple-gray-400 text-[15px] max-w-[260px] mx-auto leading-relaxed">
+                  Hint: {secretWord.hint}
+                </p>
+              ) : (
+                <p className="text-apple-gray-400 text-[15px] max-w-[260px] mx-auto leading-relaxed">
+                  Blend in. Don't reveal you don't know the word.
+                </p>
+              )}
             </div>
           ) : (
             <div className="space-y-3">
               <p className="text-apple-gray-400 text-[15px]">The secret word is</p>
-              <h2 className="text-[52px] font-semibold tracking-tight text-apple-label leading-none">{secretWord}</h2>
+              <h2 className="text-[52px] font-semibold tracking-tight text-apple-label leading-none">{secretWord.word}</h2>
             </div>
           )}
           <p className="text-apple-gray-300 text-[15px] pt-4">Tap to hide</p>

@@ -6,9 +6,11 @@ function loadSettings() {
     return {
       players: JSON.parse(localStorage.getItem('imposter_players') ?? '[]'),
       selectedCategories: JSON.parse(localStorage.getItem('imposter_categories') ?? '[]'),
+      imposterCount: parseInt(localStorage.getItem('imposter_count') ?? '1', 10),
+      showHints: localStorage.getItem('imposter_show_hints') === 'true',
     }
   } catch {
-    return { players: [], selectedCategories: [] }
+    return { players: [], selectedCategories: [], imposterCount: 1, showHints: false }
   }
 }
 
@@ -18,8 +20,10 @@ const initialState = {
   phase: 'SETUP',
   players: saved.players,
   selectedCategories: saved.selectedCategories,
-  secretWord: '',
-  imposterIndex: -1,
+  imposterCount: saved.imposterCount,
+  showHints: saved.showHints,
+  secretWord: null,
+  imposterIndices: [],
   revealStep: 0,
   revealPhase: 'NAME',
 }
@@ -34,6 +38,14 @@ export function useGameState() {
   useEffect(() => {
     localStorage.setItem('imposter_categories', JSON.stringify(state.selectedCategories))
   }, [state.selectedCategories])
+
+  useEffect(() => {
+    localStorage.setItem('imposter_count', String(state.imposterCount))
+  }, [state.imposterCount])
+
+  useEffect(() => {
+    localStorage.setItem('imposter_show_hints', String(state.showHints))
+  }, [state.showHints])
 
   function addPlayer(name) {
     const trimmed = name.trim()
@@ -57,15 +69,23 @@ export function useGameState() {
     })
   }
 
+  function setImposterCount(count) {
+    setState(s => ({ ...s, imposterCount: Math.max(0, Math.min(25, count)) }))
+  }
+
+  function toggleShowHints() {
+    setState(s => ({ ...s, showHints: !s.showHints }))
+  }
+
   function startGame() {
     setState(s => {
       const secretWord = pickWord(s.selectedCategories)
-      const imposterIndex = pickImposter(s.players.length)
+      const imposterIndices = pickImposter(s.players.length, s.imposterCount)
       return {
         ...s,
         phase: 'REVEAL_SEQUENCE',
         secretWord,
-        imposterIndex,
+        imposterIndices,
         revealStep: 0,
         revealPhase: 'NAME',
       }
@@ -96,6 +116,8 @@ export function useGameState() {
       ...initialState,
       players: s.players,
       selectedCategories: s.selectedCategories,
+      imposterCount: s.imposterCount,
+      showHints: s.showHints,
     }))
   }
 
@@ -105,6 +127,8 @@ export function useGameState() {
       addPlayer,
       removePlayer,
       toggleCategory,
+      setImposterCount,
+      toggleShowHints,
       startGame,
       advanceTap,
       revealImposter,

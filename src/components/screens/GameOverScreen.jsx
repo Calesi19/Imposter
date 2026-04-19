@@ -1,8 +1,8 @@
 import Button from '../ui/Button.jsx'
 
 export default function GameOverScreen({ state, actions }) {
-  const { players, imposterIndex, imposterCaught, imposterGuessCorrect, secretWord, accusedPlayer } = state
-  const imposterName = players[imposterIndex]
+  const { players, imposterIndices, imposterCaught, imposterGuessCorrect, secretWord, accusedPlayer } = state
+  const imposterNames = imposterIndices.map(i => players[i]).join(' & ')
 
   const imposterWins = !imposterCaught || imposterGuessCorrect === true
 
@@ -15,14 +15,14 @@ export default function GameOverScreen({ state, actions }) {
             {imposterWins ? 'Imposter wins' : 'Players win'}
           </p>
           <h2 className="text-[36px] font-semibold tracking-tight text-apple-label leading-tight">
-            {imposterWins ? `${imposterName} fooled everyone.` : 'The Imposter was caught.'}
+            {imposterWins ? `${imposterNames} fooled everyone.` : 'The Imposter was caught.'}
           </h2>
         </div>
 
         <div className="bg-white rounded-2xl border border-apple-gray-200 overflow-hidden">
           {[
-            { label: 'Secret word', value: secretWord, valueClass: 'text-apple-label font-semibold' },
-            { label: 'Imposter', value: imposterName, valueClass: 'text-apple-red font-medium' },
+            { label: 'Secret word', value: secretWord?.word ?? secretWord, valueClass: 'text-apple-label font-semibold' },
+            { label: imposterIndices.length === 1 ? 'Imposter' : 'Imposters', value: imposterNames, valueClass: 'text-apple-red font-medium' },
             { label: 'Most votes', value: accusedPlayer, valueClass: 'text-apple-label' },
             ...(imposterGuessCorrect !== null
               ? [{ label: "Imposter's guess", value: imposterGuessCorrect ? 'Correct' : 'Wrong', valueClass: imposterGuessCorrect ? 'text-apple-green font-medium' : 'text-apple-red font-medium' }]
