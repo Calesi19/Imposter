@@ -1,4 +1,8 @@
+import { useContext } from 'react'
+import { LanguageContext, t } from '../../i18n/index.js'
+
 export default function WordRevealScreen({ state, actions }) {
+  const { lang } = useContext(LanguageContext)
   const { players, revealStep, revealPhase, imposterIndices, secretWord, showHints } = state
   const currentPlayer = players[revealStep]
   const isImposter = imposterIndices.includes(revealStep)
@@ -18,11 +22,12 @@ export default function WordRevealScreen({ state, actions }) {
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
+
       {revealPhase === 'NAME' && (
         <div className="text-center space-y-4">
-          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">Next up</p>
+          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">{t(lang, 'nextUp')}</p>
           <h2 className="text-[40px] font-semibold tracking-tight text-apple-label leading-tight">{currentPlayer}</h2>
-          <p className="text-apple-gray-400 text-[17px]">Tap to see your word</p>
+          <p className="text-apple-gray-400 text-[17px]">{t(lang, 'tapToSeeWord')}</p>
         </div>
       )}
 
@@ -32,25 +37,25 @@ export default function WordRevealScreen({ state, actions }) {
           {isImposter ? (
             <div className="space-y-4">
               <h2 className="text-[36px] font-semibold tracking-tight text-apple-red leading-tight">
-                You are the<br />Imposter.
+                {t(lang, 'youAreImposterLine1')}<br />{t(lang, 'youAreImposterLine2')}
               </h2>
               {showHints ? (
                 <p className="text-apple-gray-400 text-[15px] max-w-[260px] mx-auto leading-relaxed">
-                  Hint: {secretWord.hint}
+                  {t(lang, 'hintLabel', { hint: secretWord.hint })}
                 </p>
               ) : (
                 <p className="text-apple-gray-400 text-[15px] max-w-[260px] mx-auto leading-relaxed">
-                  Blend in. Don't reveal you don't know the word.
+                  {t(lang, 'imposterBlend')}
                 </p>
               )}
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-apple-gray-400 text-[15px]">The secret word is</p>
+              <p className="text-apple-gray-400 text-[15px]">{t(lang, 'secretWordIs')}</p>
               <h2 className="text-[52px] font-semibold tracking-tight text-apple-label leading-none">{secretWord.word}</h2>
             </div>
           )}
-          <p className="text-apple-gray-300 text-[15px] pt-4">Tap to hide</p>
+          <p className="text-apple-gray-300 text-[15px] pt-4">{t(lang, 'tapToHide')}</p>
         </div>
       )}
 
@@ -64,12 +69,14 @@ export default function WordRevealScreen({ state, actions }) {
             </svg>
           </div>
           <div className="space-y-2">
-            <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">Cover the screen</h2>
+            <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{t(lang, 'coverScreen')}</h2>
             <p className="text-apple-gray-500 text-[17px]">
-              {isLastPlayer ? 'Tap when everyone is ready' : `Pass to ${players[revealStep + 1]}`}
+              {isLastPlayer
+                ? t(lang, 'tapWhenReady')
+                : t(lang, 'passTo', { name: players[revealStep + 1] })}
             </p>
           </div>
-          <p className="text-apple-gray-300 text-[15px]">Tap to continue</p>
+          <p className="text-apple-gray-300 text-[15px]">{t(lang, 'tapToContinue')}</p>
         </div>
       )}
 

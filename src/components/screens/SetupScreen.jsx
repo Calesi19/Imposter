@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { CATEGORIES } from '../../data/words.js'
+import { CATEGORIES_ES } from '../../data/words_es.js'
+import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
 import PlayerChip from '../ui/PlayerChip.jsx'
 import CategoryCard from '../ui/CategoryCard.jsx'
 
 export default function SetupScreen({ state, actions }) {
+  const { lang, setLang } = useContext(LanguageContext)
   const [input, setInput] = useState('')
 
   function handleAdd() {
@@ -18,20 +21,37 @@ export default function SetupScreen({ state, actions }) {
   }
 
   const canStart = state.players.length >= 3 && state.selectedCategories.length >= 1
+  const categories = lang === 'es' ? CATEGORIES_ES : CATEGORIES
 
   return (
     <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
       <div className="flex-1 overflow-y-auto px-5 pt-14 pb-32 space-y-8">
 
-        <div>
-          <h1 className="text-[34px] font-semibold tracking-tight text-apple-label">Imposter</h1>
-          <p className="text-apple-gray-500 mt-1 text-[15px]">The word bluffing game</p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-[34px] font-semibold tracking-tight text-apple-label">{t(lang, 'title')}</h1>
+            <p className="text-apple-gray-500 mt-1 text-[15px]">{t(lang, 'subtitle')}</p>
+          </div>
+          <div className="flex bg-apple-gray-200 rounded-full p-0.5 mt-2 shrink-0">
+            <button
+              onClick={() => setLang('en')}
+              className={`px-3 py-1 rounded-full text-[13px] font-semibold transition-all ${lang === 'en' ? 'bg-white text-apple-label shadow-sm' : 'text-apple-gray-400'}`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang('es')}
+              className={`px-3 py-1 rounded-full text-[13px] font-semibold transition-all ${lang === 'es' ? 'bg-white text-apple-label shadow-sm' : 'text-apple-gray-400'}`}
+            >
+              ES
+            </button>
+          </div>
         </div>
 
         {/* Players */}
         <section className="space-y-3">
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-400">
-            Players
+            {t(lang, 'players')}
           </h2>
           <div className="flex gap-2">
             <input
@@ -39,7 +59,7 @@ export default function SetupScreen({ state, actions }) {
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Add a player"
+              placeholder={t(lang, 'addPlayerPlaceholder')}
               maxLength={20}
               className="flex-1 bg-white border border-apple-gray-200 rounded-xl px-4 py-3 text-apple-label text-[17px] placeholder-apple-gray-300 outline-none focus:border-apple-blue transition-colors"
             />
@@ -48,7 +68,7 @@ export default function SetupScreen({ state, actions }) {
               disabled={!input.trim()}
               className="bg-apple-blue text-white px-5 rounded-xl font-medium text-[17px] disabled:opacity-40 active:scale-95 transition-all"
             >
-              Add
+              {t(lang, 'add')}
             </button>
           </div>
           {state.players.length > 0 ? (
@@ -58,17 +78,17 @@ export default function SetupScreen({ state, actions }) {
               ))}
             </div>
           ) : (
-            <p className="text-apple-gray-300 text-[13px]">At least 3 players required</p>
+            <p className="text-apple-gray-300 text-[13px]">{t(lang, 'minPlayersHint')}</p>
           )}
         </section>
 
         {/* Categories */}
         <section className="space-y-3">
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-400">
-            Word Themes
+            {t(lang, 'wordThemes')}
           </h2>
           <div className="grid grid-cols-3 gap-2">
-            {Object.entries(CATEGORIES).map(([key, cat]) => (
+            {Object.entries(categories).map(([key, cat]) => (
               <CategoryCard
                 key={key}
                 label={cat.label}
@@ -79,17 +99,17 @@ export default function SetupScreen({ state, actions }) {
             ))}
           </div>
           {state.selectedCategories.length === 0 && (
-            <p className="text-apple-gray-300 text-[13px]">Select at least one theme</p>
+            <p className="text-apple-gray-300 text-[13px]">{t(lang, 'minThemeHint')}</p>
           )}
         </section>
 
         {/* Imposters */}
         <section className="space-y-3">
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-400">
-            Imposters
+            {t(lang, 'imposters')}
           </h2>
           <div className="bg-white border border-apple-gray-200 rounded-2xl px-4 py-3 flex items-center justify-between">
-            <span className="text-apple-label text-[17px]">Number of Imposters</span>
+            <span className="text-apple-label text-[17px]">{t(lang, 'numberOfImposters')}</span>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => actions.setImposterCount(state.imposterCount - 1)}
@@ -117,12 +137,12 @@ export default function SetupScreen({ state, actions }) {
         {/* Options */}
         <section className="space-y-3">
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-400">
-            Options
+            {t(lang, 'options')}
           </h2>
           <div className="bg-white border border-apple-gray-200 rounded-2xl px-4 py-3 flex items-center justify-between">
             <div>
-              <p className="text-apple-label text-[17px]">Imposter Hints</p>
-              <p className="text-apple-gray-400 text-[13px] mt-0.5">Imposters get a subtle clue during reveal</p>
+              <p className="text-apple-label text-[17px]">{t(lang, 'imposterHints')}</p>
+              <p className="text-apple-gray-400 text-[13px] mt-0.5">{t(lang, 'imposterHintsDesc')}</p>
             </div>
             <button
               onClick={actions.toggleShowHints}
@@ -144,7 +164,7 @@ export default function SetupScreen({ state, actions }) {
 
       <div className="fixed bottom-0 left-0 right-0 px-5 pb-10 pt-4 bg-apple-gray-50/90 backdrop-blur-sm">
         <Button onClick={actions.startGame} disabled={!canStart}>
-          Start Game
+          {t(lang, 'startGame')}
         </Button>
       </div>
     </div>

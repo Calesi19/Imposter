@@ -1,6 +1,9 @@
+import { useContext } from 'react'
+import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
 
 export default function GameOverScreen({ state, actions }) {
+  const { lang } = useContext(LanguageContext)
   const { players, imposterIndices, imposterCaught, imposterGuessCorrect, secretWord, accusedPlayer } = state
   const imposterNames = imposterIndices.map(i => players[i]).join(' & ')
 
@@ -12,20 +15,22 @@ export default function GameOverScreen({ state, actions }) {
 
         <div className="text-center space-y-2">
           <p className={`text-[13px] uppercase tracking-widest font-medium ${imposterWins ? 'text-apple-red' : 'text-apple-blue'}`}>
-            {imposterWins ? 'Imposter wins' : 'Players win'}
+            {imposterWins ? t(lang, 'imposterWins') : t(lang, 'playersWin')}
           </p>
           <h2 className="text-[36px] font-semibold tracking-tight text-apple-label leading-tight">
-            {imposterWins ? `${imposterNames} fooled everyone.` : 'The Imposter was caught.'}
+            {imposterWins
+              ? t(lang, 'fooledEveryone', { names: imposterNames })
+              : t(lang, 'imposterCaught')}
           </h2>
         </div>
 
         <div className="bg-white rounded-2xl border border-apple-gray-200 overflow-hidden">
           {[
-            { label: 'Secret word', value: secretWord?.word ?? secretWord, valueClass: 'text-apple-label font-semibold' },
-            { label: imposterIndices.length === 1 ? 'Imposter' : 'Imposters', value: imposterNames, valueClass: 'text-apple-red font-medium' },
-            { label: 'Most votes', value: accusedPlayer, valueClass: 'text-apple-label' },
+            { label: t(lang, 'secretWord'), value: secretWord?.word ?? secretWord, valueClass: 'text-apple-label font-semibold' },
+            { label: imposterIndices.length === 1 ? t(lang, 'imposter') : t(lang, 'impostersLabel'), value: imposterNames, valueClass: 'text-apple-red font-medium' },
+            { label: t(lang, 'mostVotes'), value: accusedPlayer, valueClass: 'text-apple-label' },
             ...(imposterGuessCorrect !== null
-              ? [{ label: "Imposter's guess", value: imposterGuessCorrect ? 'Correct' : 'Wrong', valueClass: imposterGuessCorrect ? 'text-apple-green font-medium' : 'text-apple-red font-medium' }]
+              ? [{ label: t(lang, 'imposterGuess'), value: imposterGuessCorrect ? t(lang, 'correct') : t(lang, 'wrong'), valueClass: imposterGuessCorrect ? 'text-apple-green font-medium' : 'text-apple-red font-medium' }]
               : []),
           ].map((row, i, arr) => (
             <div
@@ -39,7 +44,7 @@ export default function GameOverScreen({ state, actions }) {
         </div>
 
         <Button onClick={actions.resetGame}>
-          Play Again
+          {t(lang, 'playAgain')}
         </Button>
       </div>
     </div>

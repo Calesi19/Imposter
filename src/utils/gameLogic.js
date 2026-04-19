@@ -1,7 +1,5 @@
-import { CATEGORIES } from '../data/words.js'
-
-export function pickWord(selectedCategoryKeys) {
-  const pool = selectedCategoryKeys.flatMap(k => CATEGORIES[k].words)
+export function pickWord(selectedCategoryKeys, categories) {
+  const pool = selectedCategoryKeys.flatMap(k => categories[k].words)
   return pool[Math.floor(Math.random() * pool.length)]
 }
 

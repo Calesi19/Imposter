@@ -1,21 +1,25 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { CATEGORIES } from '../../data/words.js'
+import { CATEGORIES_ES } from '../../data/words_es.js'
+import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
 
 export default function ImposterGuessScreen({ state, actions }) {
+  const { lang } = useContext(LanguageContext)
   const [selected, setSelected] = useState('')
   const { players, imposterIndices, selectedCategories } = state
   const imposterNames = imposterIndices.map(i => players[i]).join(' & ')
 
-  const wordPool = [...new Set(selectedCategories.flatMap(k => CATEGORIES[k].words.map(w => w.word)))].sort()
+  const categories = lang === 'es' ? CATEGORIES_ES : CATEGORIES
+  const wordPool = [...new Set(selectedCategories.flatMap(k => categories[k].words.map(w => w.word)))].sort()
 
   return (
     <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
       <div className="flex-1 overflow-y-auto px-5 pt-12 pb-6">
         <div className="text-center mb-8 space-y-1">
-          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">Last Chance</p>
-          <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{imposterNames}, guess the word</h2>
-          <p className="text-apple-gray-500 text-[15px]">Guess correctly to win</p>
+          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">{t(lang, 'lastChance')}</p>
+          <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{t(lang, 'guessTheWord', { names: imposterNames })}</h2>
+          <p className="text-apple-gray-500 text-[15px]">{t(lang, 'guessToWin')}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
@@ -40,7 +44,7 @@ export default function ImposterGuessScreen({ state, actions }) {
           onClick={() => actions.submitImposterGuess(selected)}
           disabled={!selected}
         >
-          Submit Guess
+          {t(lang, 'submitGuess')}
         </Button>
       </div>
     </div>

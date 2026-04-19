@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { LanguageContext, t } from '../../i18n/index.js'
+import Button from '../ui/Button.jsx'
 
 const VoteStep = {
   PROMPT: 'PROMPT',
@@ -7,6 +9,7 @@ const VoteStep = {
 }
 
 export default function VotingScreen({ state, actions }) {
+  const { lang } = useContext(LanguageContext)
   const { players, currentVoterIndex } = state
   const [step, setStep] = useState(VoteStep.PROMPT)
   const currentVoter = players[currentVoterIndex]
@@ -32,13 +35,13 @@ export default function VotingScreen({ state, actions }) {
           <div className="text-center space-y-8">
             <div className="space-y-2">
               <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">
-                Vote {currentVoterIndex + 1} of {players.length}
+                {t(lang, 'voteProgress', { current: currentVoterIndex + 1, total: players.length })}
               </p>
-              <p className="text-apple-gray-500 text-[17px]">Pass the phone to</p>
+              <p className="text-apple-gray-500 text-[17px]">{t(lang, 'passPhone')}</p>
               <h2 className="text-[40px] font-semibold tracking-tight text-apple-label">{currentVoter}</h2>
             </div>
             <Button onClick={handleReady}>
-              I'm Ready to Vote
+              {t(lang, 'readyToVote')}
             </Button>
           </div>
         )}
@@ -46,8 +49,8 @@ export default function VotingScreen({ state, actions }) {
         {step === VoteStep.VOTING && (
           <div className="space-y-4">
             <div className="text-center space-y-1">
-              <h2 className="text-[22px] font-semibold tracking-tight text-apple-label">Who is the Imposter?</h2>
-              <p className="text-apple-gray-500 text-[15px]">{currentVoter}, cast your vote</p>
+              <h2 className="text-[22px] font-semibold tracking-tight text-apple-label">{t(lang, 'whoIsImposter')}</h2>
+              <p className="text-apple-gray-500 text-[15px]">{t(lang, 'castVote', { name: currentVoter })}</p>
             </div>
             <div className="space-y-2">
               {players
@@ -73,9 +76,9 @@ export default function VotingScreen({ state, actions }) {
               </svg>
             </div>
             <div className="space-y-1">
-              <p className="text-apple-label text-[17px] font-medium">Vote recorded</p>
+              <p className="text-apple-label text-[17px] font-medium">{t(lang, 'voteRecorded')}</p>
               {!isLastVoter && (
-                <p className="text-apple-gray-500 text-[15px]">Pass to {players[currentVoterIndex + 1]}</p>
+                <p className="text-apple-gray-500 text-[15px]">{t(lang, 'passTo', { name: players[currentVoterIndex + 1] })}</p>
               )}
             </div>
           </div>
