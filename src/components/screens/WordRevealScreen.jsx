@@ -10,16 +10,9 @@ export default function WordRevealScreen({ state, actions }) {
       onClick={actions.advanceTap}
     >
       {revealPhase === 'NAME' && (
-        <div className="text-center space-y-8">
-          <div className="w-20 h-20 rounded-full bg-apple-gray-100 border border-apple-gray-200 flex items-center justify-center mx-auto">
-            <span className="text-3xl font-semibold text-apple-gray-500">
-              {currentPlayer.charAt(0).toUpperCase()}
-            </span>
-          </div>
-          <div className="space-y-2">
-            <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">Next up</p>
-            <h2 className="text-[40px] font-semibold tracking-tight text-apple-label leading-tight">{currentPlayer}</h2>
-          </div>
+        <div className="text-center space-y-4">
+          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">Next up</p>
+          <h2 className="text-[40px] font-semibold tracking-tight text-apple-label leading-tight">{currentPlayer}</h2>
           <p className="text-apple-gray-400 text-[17px]">Tap to see your word</p>
         </div>
       )}
