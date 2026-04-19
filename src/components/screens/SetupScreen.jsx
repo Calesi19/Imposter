@@ -17,7 +17,7 @@ export default function SetupScreen({ state, actions }) {
     if (e.key === 'Enter') handleAdd()
   }
 
-  const canStart = state.players.length >= 2 && state.selectedCategories.length >= 1
+  const canStart = state.players.length >= 3 && state.selectedCategories.length >= 1
 
   return (
     <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
@@ -58,7 +58,7 @@ export default function SetupScreen({ state, actions }) {
               ))}
             </div>
           ) : (
-            <p className="text-apple-gray-300 text-[13px]">At least 2 players required</p>
+            <p className="text-apple-gray-300 text-[13px]">At least 3 players required</p>
           )}
         </section>
 
