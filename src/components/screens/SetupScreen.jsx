@@ -32,19 +32,24 @@ export default function SetupScreen({ state, actions }) {
             <h1 className="text-[34px] font-semibold tracking-tight text-apple-label">{t(lang, 'title')}</h1>
             <p className="text-apple-gray-500 mt-1 text-[15px]">{t(lang, 'subtitle')}</p>
           </div>
-          <div className="flex bg-apple-gray-200 rounded-full p-0.5 mt-2 shrink-0">
-            <button
-              onClick={() => setLang('en')}
-              className={`px-3 py-1 rounded-full text-[13px] font-semibold transition-all ${lang === 'en' ? 'bg-white text-apple-label shadow-sm' : 'text-apple-gray-400'}`}
+          <div className="relative mt-2 flex items-center gap-1.5 text-apple-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none shrink-0">
+              <path d="m5 8 6 6"/>
+              <path d="m4 14 6-6 2-3"/>
+              <path d="M2 5h12"/>
+              <path d="M7 2h1"/>
+              <path d="m22 22-5-10-5 10"/>
+              <path d="M14 18h6"/>
+            </svg>
+            <span className="text-[15px] font-semibold pointer-events-none">{lang.toUpperCase()}</span>
+            <select
+              value={lang}
+              onChange={e => setLang(e.target.value)}
+              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
             >
-              EN
-            </button>
-            <button
-              onClick={() => setLang('es')}
-              className={`px-3 py-1 rounded-full text-[13px] font-semibold transition-all ${lang === 'es' ? 'bg-white text-apple-label shadow-sm' : 'text-apple-gray-400'}`}
-            >
-              ES
-            </button>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
           </div>
         </div>
 
