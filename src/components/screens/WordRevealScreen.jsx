@@ -6,7 +6,7 @@ export default function WordRevealScreen({ state, actions }) {
 
   return (
     <div
-      className="min-h-dvh min-h-screen bg-white flex flex-col items-center justify-center px-8 select-none"
+      className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col items-center justify-center px-8 select-none"
       onClick={actions.advanceTap}
     >
       {revealPhase === 'NAME' && (
