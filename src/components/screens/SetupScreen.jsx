@@ -27,30 +27,30 @@ export default function SetupScreen({ state, actions }) {
     <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
       <div className="flex-1 overflow-y-auto px-5 pt-14 pb-32 space-y-8">
 
-        <div className="flex justify-between items-start">
-          <div>
+        <div>
+          <div className="flex justify-between items-center">
             <h1 className="text-[34px] font-semibold tracking-tight text-apple-label">{t(lang, 'title')}</h1>
-            <p className="text-apple-gray-500 mt-1 text-[15px]">{t(lang, 'subtitle')}</p>
+            <div className="relative flex items-center gap-1.5 text-apple-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none shrink-0">
+                <path d="m5 8 6 6"/>
+                <path d="m4 14 6-6 2-3"/>
+                <path d="M2 5h12"/>
+                <path d="M7 2h1"/>
+                <path d="m22 22-5-10-5 10"/>
+                <path d="M14 18h6"/>
+              </svg>
+              <span className="text-[15px] font-semibold pointer-events-none">{lang.toUpperCase()}</span>
+              <select
+                value={lang}
+                onChange={e => setLang(e.target.value)}
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+              >
+                <option value="en">English</option>
+                <option value="es">Español</option>
+              </select>
+            </div>
           </div>
-          <div className="relative mt-2 flex items-center gap-1.5 text-apple-blue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none shrink-0">
-              <path d="m5 8 6 6"/>
-              <path d="m4 14 6-6 2-3"/>
-              <path d="M2 5h12"/>
-              <path d="M7 2h1"/>
-              <path d="m22 22-5-10-5 10"/>
-              <path d="M14 18h6"/>
-            </svg>
-            <span className="text-[15px] font-semibold pointer-events-none">{lang.toUpperCase()}</span>
-            <select
-              value={lang}
-              onChange={e => setLang(e.target.value)}
-              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-            >
-              <option value="en">English</option>
-              <option value="es">Español</option>
-            </select>
-          </div>
+          <p className="text-apple-gray-500 mt-1 text-[15px]">{t(lang, 'subtitle')}</p>
         </div>
 
         {/* Players */}
