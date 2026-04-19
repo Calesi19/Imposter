@@ -1,5 +1,7 @@
 import { useGameState } from './hooks/useGameState.js'
 import { useLanguage } from './hooks/useLanguage.js'
+import { useTheme } from './hooks/useTheme.js'
+import { ThemeContext } from './hooks/useTheme.js'
 import { LanguageContext } from './i18n/index.js'
 import SetupScreen from './components/screens/SetupScreen.jsx'
 import WordRevealScreen from './components/screens/WordRevealScreen.jsx'
@@ -11,6 +13,7 @@ import GameOverScreen from './components/screens/GameOverScreen.jsx'
 
 export default function App() {
   const { lang, setLang } = useLanguage()
+  const { theme, toggleTheme } = useTheme()
   const { state, actions } = useGameState(lang)
 
   const screens = {
@@ -24,12 +27,14 @@ export default function App() {
   }
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang }}>
-      <div className="min-h-screen bg-apple-gray-50 sm:flex sm:justify-center">
-        <div className="w-full sm:max-w-sm sm:min-h-screen overflow-hidden relative">
-          {screens[state.phase]}
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <LanguageContext.Provider value={{ lang, setLang }}>
+        <div className="min-h-screen bg-apple-gray-50 dark:bg-black sm:flex sm:justify-center">
+          <div className="w-full sm:max-w-sm sm:min-h-screen overflow-hidden relative">
+            {screens[state.phase]}
+          </div>
         </div>
-      </div>
-    </LanguageContext.Provider>
+      </LanguageContext.Provider>
+    </ThemeContext.Provider>
   )
 }

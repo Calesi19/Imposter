@@ -15,12 +15,12 @@ export default function ImposterGuessScreen({ state, actions }) {
   const wordPool = [...new Set(selectedCategories.flatMap(k => categories[k].words.map(w => w.word)))].sort()
 
   return (
-    <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
+    <div className="min-h-dvh min-h-screen bg-apple-gray-50 dark:bg-black flex flex-col">
       <div className="flex-1 overflow-y-auto px-5 pt-12 pb-6">
         <div className="text-center mb-8 space-y-1">
-          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">{t(lang, 'lastChance')}</p>
-          <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{t(lang, 'guessTheWord', { names: imposterNames })}</h2>
-          <p className="text-apple-gray-500 text-[15px]">{t(lang, 'guessToWin')}</p>
+          <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[13px] uppercase tracking-widest font-medium">{t(lang, 'lastChance')}</p>
+          <h2 className="text-[28px] font-semibold tracking-tight text-apple-label dark:text-white">{t(lang, 'guessTheWord', { names: imposterNames })}</h2>
+          <p className="text-apple-gray-500 dark:text-apple-gray-400 text-[15px]">{t(lang, 'guessToWin')}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
@@ -31,7 +31,7 @@ export default function ImposterGuessScreen({ state, actions }) {
               className={`min-h-[48px] rounded-xl text-[15px] font-medium transition-all duration-150 active:scale-95 select-none px-3 py-3 border ${
                 selected === word
                   ? 'bg-apple-blue text-white border-apple-blue'
-                  : 'bg-white text-apple-label border-apple-gray-200'
+                  : 'bg-white dark:bg-apple-gray-900 text-apple-label dark:text-white border-apple-gray-200 dark:border-apple-gray-700'
               }`}
             >
               {word}
@@ -40,7 +40,7 @@ export default function ImposterGuessScreen({ state, actions }) {
         </div>
       </div>
 
-      <div className="px-5 pb-10 pt-3 border-t border-apple-gray-200 bg-apple-gray-50">
+      <div className="px-5 pb-10 pt-3 border-t border-apple-gray-200 dark:border-apple-gray-700 bg-apple-gray-50 dark:bg-black">
         <Button
           onClick={() => actions.submitImposterGuess(selected)}
           disabled={!selected}

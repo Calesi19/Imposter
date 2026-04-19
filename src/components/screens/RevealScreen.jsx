@@ -8,11 +8,11 @@ export default function RevealScreen({ state, actions }) {
   const imposterNames = imposterIndices.map(i => players[i])
 
   return (
-    <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col items-center justify-center px-6">
+    <div className="min-h-dvh min-h-screen bg-apple-gray-50 dark:bg-black flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm space-y-8 text-center">
 
         <div className="space-y-2">
-          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">
+          <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[13px] uppercase tracking-widest font-medium">
             {imposterNames.length === 1
               ? t(lang, 'theImposterWas')
               : imposterNames.length === 0

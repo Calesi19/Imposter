@@ -10,7 +10,7 @@ export default function WordRevealScreen({ state, actions }) {
 
   return (
     <div
-      className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col items-center justify-center px-8 select-none"
+      className="min-h-dvh min-h-screen bg-apple-gray-50 dark:bg-black flex flex-col items-center justify-center px-8 select-none"
       onClick={actions.advanceTap}
     >
       <button
@@ -25,58 +25,58 @@ export default function WordRevealScreen({ state, actions }) {
 
       {revealPhase === 'NAME' && (
         <div className="text-center space-y-4">
-          <p className="text-apple-gray-400 text-[13px] uppercase tracking-widest font-medium">{t(lang, 'nextUp')}</p>
-          <h2 className="text-[40px] font-semibold tracking-tight text-apple-label leading-tight">{currentPlayer}</h2>
-          <p className="text-apple-gray-400 text-[17px]">{t(lang, 'tapToSeeWord')}</p>
+          <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[13px] uppercase tracking-widest font-medium">{t(lang, 'nextUp')}</p>
+          <h2 className="text-[40px] font-semibold tracking-tight text-apple-label dark:text-white leading-tight">{currentPlayer}</h2>
+          <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[17px]">{t(lang, 'tapToSeeWord')}</p>
         </div>
       )}
 
       {revealPhase === 'WORD' && (
         <div className="text-center space-y-6">
-          <p className="text-apple-gray-400 text-[15px] font-medium">{currentPlayer}</p>
+          <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[15px] font-medium">{currentPlayer}</p>
           {isImposter ? (
             <div className="space-y-4">
               <h2 className="text-[36px] font-semibold tracking-tight text-apple-red leading-tight">
                 {t(lang, 'youAreImposterLine1')}<br />{t(lang, 'youAreImposterLine2')}
               </h2>
               {showHints ? (
-                <p className="text-apple-gray-400 text-[15px] max-w-[260px] mx-auto leading-relaxed">
+                <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[15px] max-w-[260px] mx-auto leading-relaxed">
                   {t(lang, 'hintLabel', { hint: secretWord.hint })}
                 </p>
               ) : (
-                <p className="text-apple-gray-400 text-[15px] max-w-[260px] mx-auto leading-relaxed">
+                <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[15px] max-w-[260px] mx-auto leading-relaxed">
                   {t(lang, 'imposterBlend')}
                 </p>
               )}
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-apple-gray-400 text-[15px]">{t(lang, 'secretWordIs')}</p>
-              <h2 className="text-[52px] font-semibold tracking-tight text-apple-label leading-none">{secretWord.word}</h2>
+              <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[15px]">{t(lang, 'secretWordIs')}</p>
+              <h2 className="text-[52px] font-semibold tracking-tight text-apple-label dark:text-white leading-none">{secretWord.word}</h2>
             </div>
           )}
-          <p className="text-apple-gray-300 text-[15px] pt-4">{t(lang, 'tapToHide')}</p>
+          <p className="text-apple-gray-300 dark:text-apple-gray-600 text-[15px] pt-4">{t(lang, 'tapToHide')}</p>
         </div>
       )}
 
       {revealPhase === 'HIDDEN' && (
         <div className="text-center space-y-6">
-          <div className="w-16 h-16 rounded-full bg-apple-gray-100 border border-apple-gray-200 flex items-center justify-center mx-auto">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6e6e73" strokeWidth="1.5" strokeLinecap="round">
+          <div className="w-16 h-16 rounded-full bg-apple-gray-100 dark:bg-apple-gray-800 border border-apple-gray-200 dark:border-apple-gray-700 flex items-center justify-center mx-auto text-apple-gray-500 dark:text-apple-gray-400">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
               <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
               <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
               <line x1="1" y1="1" x2="23" y2="23"/>
             </svg>
           </div>
           <div className="space-y-2">
-            <h2 className="text-[28px] font-semibold tracking-tight text-apple-label">{t(lang, 'coverScreen')}</h2>
-            <p className="text-apple-gray-500 text-[17px]">
+            <h2 className="text-[28px] font-semibold tracking-tight text-apple-label dark:text-white">{t(lang, 'coverScreen')}</h2>
+            <p className="text-apple-gray-500 dark:text-apple-gray-400 text-[17px]">
               {isLastPlayer
                 ? t(lang, 'tapWhenReady')
                 : t(lang, 'passTo', { name: players[revealStep + 1] })}
             </p>
           </div>
-          <p className="text-apple-gray-300 text-[15px]">{t(lang, 'tapToContinue')}</p>
+          <p className="text-apple-gray-300 dark:text-apple-gray-600 text-[15px]">{t(lang, 'tapToContinue')}</p>
         </div>
       )}
 
@@ -87,10 +87,10 @@ export default function WordRevealScreen({ state, actions }) {
             key={i}
             className={`rounded-full transition-all duration-300 ${
               i < revealStep
-                ? 'w-1.5 h-1.5 bg-apple-gray-200'
+                ? 'w-1.5 h-1.5 bg-apple-gray-200 dark:bg-apple-gray-700'
                 : i === revealStep
                 ? 'w-4 h-1.5 bg-apple-blue'
-                : 'w-1.5 h-1.5 bg-apple-gray-200'
+                : 'w-1.5 h-1.5 bg-apple-gray-200 dark:bg-apple-gray-700'
             }`}
           />
         ))}

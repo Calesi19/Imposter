@@ -16,6 +16,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark body {
+  background-color: #000000;
+  color: #ffffff;
+}
+
 #root {
   min-height: 100dvh;
   min-height: 100vh;

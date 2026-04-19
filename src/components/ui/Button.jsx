@@ -2,7 +2,7 @@ export default function Button({ children, onClick, variant = 'primary', disable
   const base = 'w-full min-h-[50px] rounded-xl font-medium text-[17px] select-none transition-all duration-150 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none tracking-tight'
   const variants = {
     primary: 'bg-apple-blue text-white',
-    secondary: 'bg-white text-apple-label border border-apple-gray-200',
+    secondary: 'bg-white dark:bg-apple-gray-900 text-apple-label dark:text-white border border-apple-gray-200 dark:border-apple-gray-700',
     danger: 'bg-apple-red text-white',
     ghost: 'bg-transparent text-apple-blue',
   }
