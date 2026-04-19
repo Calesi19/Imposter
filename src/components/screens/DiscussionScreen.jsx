@@ -23,8 +23,8 @@ export default function DiscussionScreen({ state, actions }) {
           ))}
         </div>
 
-        <Button onClick={actions.startVoting}>
-          Start Voting
+        <Button onClick={actions.revealImposter}>
+          Reveal Imposter
         </Button>
       </div>
     </div>
