@@ -21,7 +21,7 @@ export default function SetupScreen({ state, actions }) {
 
   return (
     <div className="min-h-dvh min-h-screen bg-apple-gray-50 flex flex-col">
-      <div className="flex-1 overflow-y-auto px-5 pt-14 pb-6 space-y-8">
+      <div className="flex-1 overflow-y-auto px-5 pt-14 pb-32 space-y-8">
 
         <div>
           <h1 className="text-[34px] font-semibold tracking-tight text-apple-label">Imposter</h1>
@@ -84,7 +84,7 @@ export default function SetupScreen({ state, actions }) {
         </section>
       </div>
 
-      <div className="px-5 pb-10 pt-2">
+      <div className="fixed bottom-0 left-0 right-0 px-5 pb-10 pt-4 bg-apple-gray-50/90 backdrop-blur-sm">
         <Button onClick={actions.startGame} disabled={!canStart}>
           Start Game
         </Button>
