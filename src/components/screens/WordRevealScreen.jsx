@@ -15,7 +15,7 @@ export default function WordRevealScreen({ state, actions }) {
     >
       <button
         onClick={e => { e.stopPropagation(); actions.resetGame() }}
-        className="absolute top-6 left-6 flex items-center gap-2 text-apple-blue text-[17px] font-medium"
+        className="absolute top-14 left-6 flex items-center gap-2 text-apple-blue text-[17px] font-medium"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
           <line x1="18" y1="6" x2="6" y2="18" />
