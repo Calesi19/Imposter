@@ -311,7 +311,8 @@ export const CATEGORIES_ES = {
       { word: "Elon Musk", hint: "SpaceX" },
       { word: "Scarlett Johansson", hint: "Marvel" },
       { word: "Dolly Parton", hint: "música country" },
-      { word: "Harry Styles", hint: "One Direction" },
+      { word: "Harry Styles", hint: "miembro de grupo" },
+      { word: "Donald Trump", hint: "politica" },
     ],
   },
 };
