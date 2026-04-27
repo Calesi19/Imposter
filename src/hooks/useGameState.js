@@ -27,8 +27,8 @@ const initialState = {
   showHints: saved.showHints,
   secretWord: null,
   imposterIndices: [],
-  revealStep: 0,
-  revealPhase: 'NAME',
+  activeRevealIndex: null,
+  revealedPlayers: [],
 }
 
 export function useGameState(lang = 'en') {
@@ -90,25 +90,31 @@ export function useGameState(lang = 'en') {
         phase: 'REVEAL_SEQUENCE',
         secretWord,
         imposterIndices,
-        revealStep: 0,
-        revealPhase: 'NAME',
+        activeRevealIndex: null,
+        revealedPlayers: [],
       }
     })
   }
 
-  function advanceTap() {
+  function openReveal(playerIndex) {
+    setState(s => ({ ...s, activeRevealIndex: playerIndex }))
+  }
+
+  function closeReveal() {
     setState(s => {
-      if (s.revealPhase === 'NAME') {
-        return { ...s, revealPhase: 'WORD' }
+      const revealed = [...s.revealedPlayers, s.activeRevealIndex]
+      const allDone = revealed.length === s.players.length
+      return {
+        ...s,
+        activeRevealIndex: null,
+        revealedPlayers: revealed,
+        phase: allDone ? 'DISCUSSION' : s.phase,
       }
-      if (s.revealPhase === 'WORD') {
-        return { ...s, revealPhase: 'HIDDEN' }
-      }
-      if (s.revealStep < s.players.length - 1) {
-        return { ...s, revealStep: s.revealStep + 1, revealPhase: 'NAME' }
-      }
-      return { ...s, phase: 'DISCUSSION' }
     })
+  }
+
+  function startDiscussion() {
+    setState(s => ({ ...s, phase: 'DISCUSSION' }))
   }
 
   function revealImposter() {
@@ -134,7 +140,9 @@ export function useGameState(lang = 'en') {
       setImposterCount,
       toggleShowHints,
       startGame,
-      advanceTap,
+      openReveal,
+      closeReveal,
+      startDiscussion,
       revealImposter,
       resetGame,
     },
