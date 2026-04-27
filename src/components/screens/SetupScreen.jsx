@@ -123,7 +123,7 @@ export default function SetupScreen({ state, actions }) {
               onKeyDown={handleKeyDown}
               placeholder={t(lang, "addPlayerPlaceholder")}
               maxLength={20}
-              className="flex-1 bg-white dark:bg-apple-gray-900 border border-apple-gray-200 dark:border-apple-gray-700 rounded-xl px-4 py-3 text-apple-label dark:text-white text-[17px] placeholder-apple-gray-300 dark:placeholder-apple-gray-600 outline-none focus:border-apple-blue transition-colors"
+              className="flex-1 bg-white dark:bg-apple-gray-900 border border-apple-gray-200 dark:border-apple-gray-700 rounded-xl px-4 py-3 text-apple-label dark:text-white text-[17px] placeholder-apple-gray-300 dark:placeholder-apple-gray-600 outline-hidden focus:border-apple-blue transition-colors"
             />
             <button
               onClick={handleAdd}
@@ -228,14 +228,14 @@ export default function SetupScreen({ state, actions }) {
               onClick={actions.toggleShowHints}
               role="switch"
               aria-checked={state.showHints}
-              className={`relative w-[51px] h-[31px] rounded-full transition-colors duration-200 focus:outline-none flex-shrink-0 ml-4 ${
+              className={`relative w-[51px] h-[31px] rounded-full transition-colors duration-200 focus:outline-hidden shrink-0 ml-4 ${
                 state.showHints
                   ? "bg-apple-blue"
                   : "bg-apple-gray-200 dark:bg-apple-gray-700"
               }`}
             >
               <span
-                className={`absolute top-[2px] left-[2px] w-[27px] h-[27px] bg-white rounded-full shadow-sm transition-transform duration-200 ${
+                className={`absolute top-[2px] left-[2px] w-[27px] h-[27px] bg-white rounded-full shadow-xs transition-transform duration-200 ${
                   state.showHints ? "translate-x-[20px]" : "translate-x-0"
                 }`}
               />
@@ -244,7 +244,7 @@ export default function SetupScreen({ state, actions }) {
         </section>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-apple-gray-50/90 dark:bg-black/90 backdrop-blur-sm">
+      <div className="fixed bottom-0 left-0 right-0 bg-apple-gray-50/90 dark:bg-black/90 backdrop-blur-xs">
         <div className="max-w-sm mx-auto px-5 pb-10 pt-4">
           <Button onClick={actions.startGame} disabled={!canStart}>
             {t(lang, "startGame")}
