@@ -215,7 +215,7 @@ export default function SetupScreen({ state, actions }) {
         </section>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xs">
+      <div className="fixed bottom-0 left-0 right-0 bg-black/30 backdrop-blur-xl">
         <div className="max-w-sm mx-auto px-5 pb-10 pt-4">
           <Button onClick={actions.startGame} disabled={!canStart}>
             {t(lang, "startGame")}
