@@ -30,7 +30,8 @@ export default function App() {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <LanguageContext.Provider value={{ lang, setLang }}>
         <div className="min-h-screen bg-black sm:flex sm:justify-center">
-          <div className="w-full sm:max-w-sm sm:min-h-screen overflow-hidden relative">
+          <div className="bg-red-glow" />
+          <div className="w-full sm:max-w-sm sm:min-h-screen overflow-hidden relative" style={{ zIndex: 1 }}>
             {screens[state.phase]}
           </div>
         </div>

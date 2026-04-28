@@ -78,6 +78,31 @@ body {
     0px 0px 200px #cc0000;
 }
 
+.bg-red-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 55% 55% at 100% 100%,
+    rgba(180, 0, 0, 0.45) 0%,
+    rgba(120, 0, 0, 0.2) 38%,
+    transparent 65%
+  );
+  animation: bg-glow-wave 6s ease-in-out infinite;
+}
+
+@keyframes bg-glow-wave {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) translate(-4%, -4%);
+  }
+}
+
 .neon-flicker-slow {
   animation: neon-flicker 3s linear infinite;
 }
