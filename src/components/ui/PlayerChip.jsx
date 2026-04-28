@@ -1,6 +1,6 @@
 export default function PlayerChip({ name, onRemove }) {
   return (
-    <div className="flex items-center gap-1.5 bg-white dark:bg-apple-gray-900 border border-apple-gray-200 dark:border-apple-gray-700 rounded-full px-3 py-1.5">
+    <div className="flex items-center gap-1.5 bg-white/8 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
       <span className="text-apple-label dark:text-white text-[15px] font-medium">{name}</span>
       {onRemove && (
         <button

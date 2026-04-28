@@ -94,7 +94,7 @@ export default function SetupScreen({ state, actions }) {
               onKeyDown={handleKeyDown}
               placeholder={t(lang, "addPlayerPlaceholder")}
               maxLength={20}
-              className="flex-1 bg-apple-gray-900 border border-apple-gray-700 rounded-xl px-4 py-3 text-white text-[17px] placeholder-apple-gray-600 outline-hidden focus:border-apple-gray-500 transition-colors"
+              className="flex-1 bg-white/8 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 text-white text-[17px] placeholder-apple-gray-600 outline-hidden focus:border-white/30 transition-colors"
             />
             <button
               onClick={handleAdd}
@@ -149,7 +149,7 @@ export default function SetupScreen({ state, actions }) {
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
             {t(lang, "imposters")}
           </h2>
-          <div className="bg-apple-gray-900 border border-apple-gray-700 rounded-2xl px-4 py-3 flex items-center justify-between">
+          <div className="bg-white/8 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 flex items-center justify-between">
             <span className="text-white text-[17px]">
               {t(lang, "numberOfImposters")}
             </span>
@@ -159,7 +159,7 @@ export default function SetupScreen({ state, actions }) {
                   actions.setImposterCount(state.imposterCount - 1)
                 }
                 disabled={state.imposterCount <= 0}
-                className="w-8 h-8 rounded-full bg-apple-gray-800 flex items-center justify-center text-white text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
+                className="w-8 h-8 rounded-full bg-white/8 flex items-center justify-center text-white text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
                 aria-label="Decrease imposter count"
               >
                 −
@@ -172,7 +172,7 @@ export default function SetupScreen({ state, actions }) {
                   actions.setImposterCount(state.imposterCount + 1)
                 }
                 disabled={state.imposterCount >= 25}
-                className="w-8 h-8 rounded-full bg-apple-gray-800 flex items-center justify-center text-white text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
+                className="w-8 h-8 rounded-full bg-white/8 flex items-center justify-center text-white text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
                 aria-label="Increase imposter count"
               >
                 +
@@ -186,7 +186,7 @@ export default function SetupScreen({ state, actions }) {
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
             {t(lang, "options")}
           </h2>
-          <div className="bg-apple-gray-900 border border-apple-gray-700 rounded-2xl px-4 py-3 flex items-center justify-between">
+          <div className="bg-white/8 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 flex items-center justify-between">
             <div>
               <p className="text-white text-[17px]">
                 {t(lang, "imposterHints")}

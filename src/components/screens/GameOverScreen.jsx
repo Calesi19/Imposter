@@ -24,7 +24,7 @@ export default function GameOverScreen({ state, actions }) {
           </h2>
         </div>
 
-        <div className="bg-white dark:bg-apple-gray-900 rounded-2xl border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+        <div className="bg-white/8 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden">
           {[
             { label: t(lang, 'secretWord'), value: secretWord?.word ?? secretWord, valueClass: 'text-apple-label dark:text-white font-semibold' },
             { label: imposterIndices.length === 1 ? t(lang, 'imposter') : t(lang, 'impostersLabel'), value: imposterNames, valueClass: 'text-apple-red font-medium' },
@@ -35,7 +35,7 @@ export default function GameOverScreen({ state, actions }) {
           ].map((row, i, arr) => (
             <div
               key={i}
-              className={`flex justify-between items-center px-4 py-3.5 ${i < arr.length - 1 ? 'border-b border-apple-gray-100 dark:border-apple-gray-800' : ''}`}
+              className={`flex justify-between items-center px-4 py-3.5 ${i < arr.length - 1 ? 'border-b border-white/10' : ''}`}
             >
               <span className="text-apple-gray-500 dark:text-apple-gray-400 text-[15px]">{row.label}</span>
               <span className={`text-[15px] ${row.valueClass}`}>{row.value}</span>

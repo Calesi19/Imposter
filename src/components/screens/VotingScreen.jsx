@@ -59,7 +59,7 @@ export default function VotingScreen({ state, actions }) {
                   <button
                     key={player}
                     onClick={() => handleVote(player)}
-                    className="w-full min-h-[54px] bg-white dark:bg-apple-gray-900 border border-apple-gray-200 dark:border-apple-gray-700 text-apple-label dark:text-white rounded-xl font-medium text-[17px] active:scale-[0.98] active:bg-apple-gray-50 dark:active:bg-apple-gray-800 transition-all select-none tracking-tight"
+                    className="w-full min-h-[54px] bg-white/8 backdrop-blur-md border border-white/10 text-white rounded-xl font-medium text-[17px] active:scale-[0.98] active:bg-white/15 transition-all select-none tracking-tight"
                   >
                     {player}
                   </button>
@@ -70,7 +70,7 @@ export default function VotingScreen({ state, actions }) {
 
         {step === VoteStep.DONE && (
           <div className="text-center space-y-4">
-            <div className="w-14 h-14 rounded-full bg-white dark:bg-apple-gray-900 border border-apple-gray-200 dark:border-apple-gray-700 flex items-center justify-center mx-auto">
+            <div className="w-14 h-14 rounded-full bg-white/8 backdrop-blur-md border border-white/10 flex items-center justify-center mx-auto">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#34c759" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>

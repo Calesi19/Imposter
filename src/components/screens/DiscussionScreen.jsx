@@ -20,7 +20,7 @@ export default function DiscussionScreen({ state, actions }) {
             t(lang, 'discussionRule2'),
             t(lang, 'discussionRule3'),
           ].map((text, i) => (
-            <div key={i} className="flex gap-3 items-start bg-white dark:bg-apple-gray-900 rounded-2xl px-4 py-4 border border-apple-gray-200 dark:border-apple-gray-700">
+            <div key={i} className="flex gap-3 items-start bg-white/8 backdrop-blur-md rounded-2xl px-4 py-4 border border-white/10">
               <span className="text-apple-blue font-semibold text-[15px] mt-0.5 shrink-0">{i + 1}</span>
               <p className="text-apple-label dark:text-white text-[15px] leading-snug">{text}</p>
             </div>

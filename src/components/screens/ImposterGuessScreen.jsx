@@ -30,8 +30,8 @@ export default function ImposterGuessScreen({ state, actions }) {
               onClick={() => setSelected(word)}
               className={`min-h-[48px] rounded-xl text-[15px] font-medium transition-all duration-150 active:scale-95 select-none px-3 py-3 border ${
                 selected === word
-                  ? 'bg-apple-blue text-white border-apple-blue'
-                  : 'bg-white dark:bg-apple-gray-900 text-apple-label dark:text-white border-apple-gray-200 dark:border-apple-gray-700'
+                  ? 'bg-white text-black border-white'
+                  : 'bg-white/8 backdrop-blur-md text-white border-white/10'
               }`}
             >
               {word}
@@ -40,7 +40,7 @@ export default function ImposterGuessScreen({ state, actions }) {
         </div>
       </div>
 
-      <div className="px-5 pb-10 pt-3 border-t border-apple-gray-200 dark:border-apple-gray-700 bg-black/80">
+      <div className="px-5 pb-10 pt-3 border-t border-white/10 bg-black/30 backdrop-blur-xl">
         <Button
           onClick={() => actions.submitImposterGuess(selected)}
           disabled={!selected}

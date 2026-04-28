@@ -36,10 +36,8 @@ export default function WordRevealScreen({ state, actions }) {
                   key={i}
                   disabled={done}
                   onClick={() => actions.openReveal(i)}
-                  className={`px-4 py-5 h-28 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all ${
-                    done
-                      ? 'bg-apple-gray-100 dark:bg-apple-gray-900 opacity-40'
-                      : 'bg-white dark:bg-apple-gray-800 shadow-sm active:scale-[0.98]'
+                  className={`px-4 py-5 h-28 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all border border-white/10 bg-white/8 backdrop-blur-md ${
+                    done ? 'opacity-40' : 'active:scale-[0.98]'
                   }`}
                 >
                   <span className={`text-[17px] font-medium leading-snug text-center ${done ? 'text-apple-gray-400 dark:text-apple-gray-500' : 'text-apple-label dark:text-white'}`}>
