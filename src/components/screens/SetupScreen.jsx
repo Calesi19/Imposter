@@ -31,8 +31,15 @@ export default function SetupScreen({ state, actions }) {
       <div className="flex-1 overflow-y-auto px-5 pt-14 pb-32 space-y-8">
         <div>
           <div className="flex justify-between items-center">
-            <h1 className="text-[34px] font-semibold tracking-tight neon-red">
-              {t(lang, "title")}
+            <h1 className="text-[34px] font-semibold tracking-tight">
+              {t(lang, "title").split('').map((char, i) => (
+                <span
+                  key={i}
+                  className={`neon-red${i === 4 ? ' neon-flicker-slow' : i === 7 ? ' neon-flicker-fast' : ''}`}
+                >
+                  {char}
+                </span>
+              ))}
             </h1>
             <div className="flex items-center gap-3 text-white">
               <div className="relative flex items-center gap-1.5">

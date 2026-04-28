@@ -65,24 +65,34 @@ body {
 }
 
 .neon-red {
-  background: linear-gradient(
-    to bottom,
-    #ff3b30 0%,
-    #ff6b60 38%,
-    #ffe0de 47%,
-    #ffffff 50%,
-    #ffe0de 53%,
-    #ff6b60 62%,
-    #ff3b30 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffd5d5;
   text-shadow:
-    0 0 7px #ff3b30,
-    0 0 14px #ff3b30,
-    0 0 28px #ff0000,
-    0 0 56px #ff0000;
+    0px 0px 4px #ffd5d5,
+    0px 0px 4px #ffd5d5,
+    0px 0px 4px #ffd5d5,
+    0px 0px 3px #ff3b30,
+    0px 3px 15px #ff3b30,
+    0px 0px 15px #ff3b30,
+    0px 0px 125px #ff3b30,
+    0px 0px 200px #cc0000,
+    0px 0px 200px #cc0000;
+}
+
+.neon-flicker-slow {
+  animation: neon-flicker 3s linear infinite;
+}
+
+.neon-flicker-fast {
+  animation: neon-flicker 1s linear infinite;
+}
+
+@keyframes neon-flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 0.99;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+  }
 }
 
 #root {
