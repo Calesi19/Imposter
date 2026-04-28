@@ -84,10 +84,10 @@ body {
   pointer-events: none;
   z-index: 0;
   background: radial-gradient(
-    ellipse 55% 55% at 100% 100%,
+    ellipse 100% 55% at 50% 100%,
     rgba(180, 0, 0, 0.45) 0%,
-    rgba(120, 0, 0, 0.2) 38%,
-    transparent 65%
+    rgba(120, 0, 0, 0.2) 45%,
+    transparent 70%
   );
   animation: bg-glow-wave 6s ease-in-out infinite;
 }
