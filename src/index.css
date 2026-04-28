@@ -65,7 +65,19 @@ body {
 }
 
 .neon-red {
-  color: #ff3b30;
+  background: linear-gradient(
+    to bottom,
+    #ff3b30 0%,
+    #ff6b60 38%,
+    #ffe0de 47%,
+    #ffffff 50%,
+    #ffe0de 53%,
+    #ff6b60 62%,
+    #ff3b30 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-shadow:
     0 0 7px #ff3b30,
     0 0 14px #ff3b30,
