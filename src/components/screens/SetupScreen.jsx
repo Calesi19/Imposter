@@ -27,7 +27,7 @@ export default function SetupScreen({ state, actions }) {
     lang === "es" ? CATEGORIES_ES : lang === "pt" ? CATEGORIES_PT : CATEGORIES;
 
   return (
-    <div className="min-h-dvh bg-black flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       <div className="flex-1 overflow-y-auto px-5 pt-14 pb-32 space-y-8">
         <div>
           <div className="flex justify-between items-center">

@@ -8,7 +8,7 @@ export default function WordRevealScreen({ state, actions }) {
   const allRevealed = revealedPlayers.length === players.length
 
   return (
-    <div className="min-h-dvh min-h-screen bg-apple-gray-50 dark:bg-black flex flex-col select-none">
+    <div className="min-h-dvh min-h-screen flex flex-col select-none">
       {/* Header */}
       <div className="pt-14 px-6">
         <button

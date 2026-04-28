@@ -8,7 +8,7 @@ export default function RevealScreen({ state, actions }) {
   const imposterNames = imposterIndices.map(i => players[i])
 
   return (
-    <div className="min-h-dvh min-h-screen bg-apple-gray-50 dark:bg-black flex flex-col items-center justify-center px-6">
+    <div className="min-h-dvh min-h-screen flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm space-y-8 text-center">
 
         <div className="space-y-2">

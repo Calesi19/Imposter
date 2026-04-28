@@ -15,7 +15,7 @@ export default function ImposterGuessScreen({ state, actions }) {
   const wordPool = [...new Set(selectedCategories.flatMap(k => categories[k].words.map(w => w.word)))].sort()
 
   return (
-    <div className="min-h-dvh min-h-screen bg-apple-gray-50 dark:bg-black flex flex-col">
+    <div className="min-h-dvh min-h-screen flex flex-col">
       <div className="flex-1 overflow-y-auto px-5 pt-12 pb-6">
         <div className="text-center mb-8 space-y-1">
           <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[13px] uppercase tracking-widest font-medium">{t(lang, 'lastChance')}</p>
@@ -40,7 +40,7 @@ export default function ImposterGuessScreen({ state, actions }) {
         </div>
       </div>
 
-      <div className="px-5 pb-10 pt-3 border-t border-apple-gray-200 dark:border-apple-gray-700 bg-apple-gray-50 dark:bg-black">
+      <div className="px-5 pb-10 pt-3 border-t border-apple-gray-200 dark:border-apple-gray-700 bg-black/80">
         <Button
           onClick={() => actions.submitImposterGuess(selected)}
           disabled={!selected}

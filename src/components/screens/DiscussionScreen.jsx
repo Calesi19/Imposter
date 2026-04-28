@@ -6,7 +6,7 @@ export default function DiscussionScreen({ state, actions }) {
   const { lang } = useContext(LanguageContext)
 
   return (
-    <div className="min-h-dvh min-h-screen bg-apple-gray-50 dark:bg-black flex flex-col items-center justify-center px-6">
+    <div className="min-h-dvh min-h-screen flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm space-y-8">
 
         <div className="text-center space-y-2">
