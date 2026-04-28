@@ -201,7 +201,7 @@ export default function SetupScreen({ state, actions }) {
               aria-checked={state.showHints}
               className={`relative w-[51px] h-[31px] rounded-full transition-colors duration-200 focus:outline-hidden shrink-0 ml-4 ${
                 state.showHints
-                  ? "bg-apple-gray-500"
+                  ? "bg-apple-gray-300"
                   : "bg-apple-gray-700"
               }`}
             >
