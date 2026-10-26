@@ -1,21 +1,29 @@
-import GlassSurface from './GlassSurface.jsx'
-
-export default function CategoryCard({ label, emoji, selected, onToggle }) {
+export default function CategoryCard({ label, imageKey, selected, onToggle }) {
   return (
-    <GlassSurface
-      as="button"
+    <button
       onClick={onToggle}
-      radius={16}
-      material={selected ? 'regular' : 'thin'}
-      tintOpacity={selected ? 0.22 : undefined}
-      className={`rounded-2xl border-2 transition-all duration-150 active:scale-95 select-none ${
-        selected ? 'border-white text-white' : 'border-white/10 text-apple-gray-400'
+      aria-pressed={selected}
+      className={`relative overflow-hidden rounded-2xl border-2 min-h-[104px] text-left transition-all duration-150 active:scale-95 select-none ${
+        selected ? 'border-white' : 'border-white/10'
       }`}
     >
-      <div className="flex flex-col items-center justify-center gap-1.5 p-3 min-h-[76px]">
-        <span className="text-2xl">{emoji}</span>
-        <span className="text-[12px] font-medium leading-tight">{label}</span>
-      </div>
-    </GlassSurface>
+      <img
+        src={`${import.meta.env.BASE_URL}categories/${imageKey}.webp`}
+        alt=""
+        draggable={false}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-150 ${
+          selected ? 'opacity-100' : 'opacity-75'
+        }`}
+      />
+      {/* Gradient that fades up from the corner, with a matching fading
+          blur, so the label stays readable over the photo. */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/85 via-black/35 to-transparent backdrop-blur-[2px] [mask-image:linear-gradient(to_top,black_45%,transparent)]"
+      />
+      <span className="absolute left-2.5 bottom-2 text-[13px] font-semibold leading-tight text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+        {label}
+      </span>
+    </button>
   )
 }

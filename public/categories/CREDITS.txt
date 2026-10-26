@@ -1,0 +1,13 @@
+Category card photos (downloaded from Wikimedia Commons, resized and cropped).
+Each file below is named after its source Commons file; author and license
+details are on the corresponding Wikimedia Commons file page.
+
+animals.webp — "Lions Family Portrait Masai Mara.jpg" by Benh LIEU SON — CC BY-SA 3.0
+food.webp — "Pizza Capricciosa on a wooden rustic table (49255425326).jpg" — CC BY 2.0
+sports.webp — "Adidas soccer ball on a grass pitch (Unsplash).jpg" by Peter Glaser — CC0
+movies.webp — "4DX seats in cinema ... Kilden kino Tonsberg, Norway 2023 IMG 7849.jpg" by Wolfm — CC BY-SA 4.0
+places.webp — "Paris - The Eiffel Tower in spring - 2307.jpg" by Jorge Royan — CC BY-SA 3.0
+objects.webp — "Trimming Tools (219483271).jpeg" — CC BY 3.0
+professions.webp — "Firefighter, Ashton Bay, March 2017.jpg" by Steven Terblanche — CC BY-SA 4.0
+nature.webp — "Sunrise - Cleveland National Forest (53977171352).jpg" — CC BY 2.0
+celebrities.webp — "Jafar Panahi at 2025 Cannes Film Festival Red Carpet Premiere.jpg" by Kacy — CC BY-SA 4.0

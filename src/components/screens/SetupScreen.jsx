@@ -132,7 +132,7 @@ export default function SetupScreen({ state, actions }) {
               <CategoryCard
                 key={key}
                 label={cat.label}
-                emoji={cat.emoji}
+                imageKey={key}
                 selected={state.selectedCategories.includes(key)}
                 onToggle={() => actions.toggleCategory(key)}
               />
