@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react'
 import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
+import GlassSurface from '../ui/GlassSurface.jsx'
 
 const VoteStep = {
   PROMPT: 'PROMPT',
@@ -56,13 +57,19 @@ export default function VotingScreen({ state, actions }) {
               {players
                 .filter(p => p !== currentVoter)
                 .map(player => (
-                  <button
+                  <GlassSurface
                     key={player}
+                    as="button"
                     onClick={() => handleVote(player)}
-                    className="w-full min-h-[54px] bg-white/8 backdrop-blur-md border border-white/10 text-white rounded-xl font-medium text-[17px] active:scale-[0.98] active:bg-white/15 transition-all select-none tracking-tight"
+                    radius={12}
+                    material="thin"
+                    liquidPress
+                    className="w-full text-white rounded-xl font-medium text-[17px] active:scale-[0.98] transition-all select-none tracking-tight"
                   >
-                    {player}
-                  </button>
+                    <div className="flex items-center justify-center min-h-[54px] px-4">
+                      {player}
+                    </div>
+                  </GlassSurface>
                 ))}
             </div>
           </div>
@@ -70,11 +77,13 @@ export default function VotingScreen({ state, actions }) {
 
         {step === VoteStep.DONE && (
           <div className="text-center space-y-4">
-            <div className="w-14 h-14 rounded-full bg-white/8 backdrop-blur-md border border-white/10 flex items-center justify-center mx-auto">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#34c759" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
+            <GlassSurface radius={999} material="thin" className="w-14 h-14 rounded-full mx-auto">
+              <div className="w-14 h-14 flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#34c759" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+            </GlassSurface>
             <div className="space-y-1">
               <p className="text-apple-label dark:text-white text-[17px] font-medium">{t(lang, 'voteRecorded')}</p>
               {!isLastVoter && (
