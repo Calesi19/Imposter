@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
+import GlassSurface from '../ui/GlassSurface.jsx'
 
 export default function DiscussionScreen({ state, actions }) {
   const { lang } = useContext(LanguageContext)
@@ -20,10 +21,12 @@ export default function DiscussionScreen({ state, actions }) {
             t(lang, 'discussionRule2'),
             t(lang, 'discussionRule3'),
           ].map((text, i) => (
-            <div key={i} className="flex gap-3 items-start bg-white/8 backdrop-blur-md rounded-2xl px-4 py-4 border border-white/10">
-              <span className="text-apple-blue font-semibold text-[15px] mt-0.5 shrink-0">{i + 1}</span>
-              <p className="text-apple-label dark:text-white text-[15px] leading-snug">{text}</p>
-            </div>
+            <GlassSurface key={i} radius={16}>
+              <div className="flex gap-3 items-start rounded-2xl px-4 py-4">
+                <span className="text-apple-blue font-semibold text-[15px] mt-0.5 shrink-0">{i + 1}</span>
+                <p className="text-apple-label dark:text-white text-[15px] leading-snug">{text}</p>
+              </div>
+            </GlassSurface>
           ))}
         </div>
 
