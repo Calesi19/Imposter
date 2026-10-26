@@ -4,6 +4,7 @@ import { CATEGORIES_ES } from '../../data/words_es.js'
 import { CATEGORIES_PT } from '../../data/words_pt.js'
 import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
+import GlassSurface from '../ui/GlassSurface.jsx'
 
 export default function ImposterGuessScreen({ state, actions }) {
   const { lang } = useContext(LanguageContext)
@@ -25,17 +26,28 @@ export default function ImposterGuessScreen({ state, actions }) {
 
         <div className="grid grid-cols-2 gap-2">
           {wordPool.map(word => (
-            <button
-              key={word}
-              onClick={() => setSelected(word)}
-              className={`min-h-[48px] rounded-xl text-[15px] font-medium transition-all duration-150 active:scale-95 select-none px-3 py-3 border ${
-                selected === word
-                  ? 'bg-white text-black border-white'
-                  : 'bg-white/8 backdrop-blur-md text-white border-white/10'
-              }`}
-            >
-              {word}
-            </button>
+            selected === word ? (
+              <button
+                key={word}
+                onClick={() => setSelected(word)}
+                className="min-h-[48px] rounded-xl text-[15px] font-medium transition-all duration-150 active:scale-95 select-none px-3 py-3 border bg-white text-black border-white"
+              >
+                {word}
+              </button>
+            ) : (
+              <GlassSurface
+                key={word}
+                as="button"
+                onClick={() => setSelected(word)}
+                radius={12}
+                material="thin"
+                className="rounded-xl text-[15px] font-medium text-white transition-all duration-150 active:scale-95 select-none"
+              >
+                <div className="flex items-center justify-center min-h-[48px] px-3 py-3">
+                  {word}
+                </div>
+              </GlassSurface>
+            )
           ))}
         </div>
       </div>
