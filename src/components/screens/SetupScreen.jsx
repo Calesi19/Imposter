@@ -6,6 +6,7 @@ import { LanguageContext, t } from "../../i18n/index.js";
 import Button from "../ui/Button.jsx";
 import PlayerChip from "../ui/PlayerChip.jsx";
 import CategoryCard from "../ui/CategoryCard.jsx";
+import GlassSurface from "../ui/GlassSurface.jsx";
 
 export default function SetupScreen({ state, actions }) {
   const { lang, setLang } = useContext(LanguageContext);
@@ -149,7 +150,8 @@ export default function SetupScreen({ state, actions }) {
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
             {t(lang, "imposters")}
           </h2>
-          <div className="bg-white/8 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 flex items-center justify-between">
+          <GlassSurface radius={16}>
+            <div className="rounded-2xl px-4 py-3 flex items-center justify-between">
             <span className="text-white text-[17px]">
               {t(lang, "numberOfImposters")}
             </span>
@@ -178,7 +180,8 @@ export default function SetupScreen({ state, actions }) {
                 +
               </button>
             </div>
-          </div>
+            </div>
+          </GlassSurface>
         </section>
 
         {/* Options */}
@@ -186,7 +189,8 @@ export default function SetupScreen({ state, actions }) {
           <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
             {t(lang, "options")}
           </h2>
-          <div className="bg-white/8 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 flex items-center justify-between">
+          <GlassSurface radius={16}>
+            <div className="rounded-2xl px-4 py-3 flex items-center justify-between">
             <div>
               <p className="text-white text-[17px]">
                 {t(lang, "imposterHints")}
@@ -211,7 +215,8 @@ export default function SetupScreen({ state, actions }) {
                 }`}
               />
             </button>
-          </div>
+            </div>
+          </GlassSurface>
         </section>
       </div>
 
