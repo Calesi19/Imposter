@@ -53,6 +53,10 @@
   touch-action: manipulation;
 }
 
+html {
+  background-color: #000000;
+}
+
 body {
   background-color: #000000;
   color: #ffffff;
