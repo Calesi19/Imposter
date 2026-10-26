@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { LanguageContext, t } from '../../i18n/index.js'
 import Button from '../ui/Button.jsx'
+import GlassSurface from '../ui/GlassSurface.jsx'
 
 export default function GameOverScreen({ state, actions }) {
   const { lang } = useContext(LanguageContext)
@@ -24,7 +25,8 @@ export default function GameOverScreen({ state, actions }) {
           </h2>
         </div>
 
-        <div className="bg-white/8 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden">
+        <GlassSurface radius={16}>
+          <div className="rounded-2xl overflow-hidden">
           {[
             { label: t(lang, 'secretWord'), value: secretWord?.word ?? secretWord, valueClass: 'text-apple-label dark:text-white font-semibold' },
             { label: imposterIndices.length === 1 ? t(lang, 'imposter') : t(lang, 'impostersLabel'), value: imposterNames, valueClass: 'text-apple-red font-medium' },
@@ -41,7 +43,8 @@ export default function GameOverScreen({ state, actions }) {
               <span className={`text-[15px] ${row.valueClass}`}>{row.value}</span>
             </div>
           ))}
-        </div>
+          </div>
+        </GlassSurface>
 
         <Button onClick={actions.resetGame}>
           {t(lang, 'playAgain')}
