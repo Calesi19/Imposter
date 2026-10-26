@@ -1,15 +1,21 @@
+import GlassSurface from './GlassSurface.jsx'
+
 export default function CategoryCard({ label, emoji, selected, onToggle }) {
   return (
-    <button
+    <GlassSurface
+      as="button"
       onClick={onToggle}
-      className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl border-2 transition-all duration-150 active:scale-95 select-none min-h-[76px] ${
-        selected
-          ? 'border-white bg-white/12 backdrop-blur-md text-white'
-          : 'border-white/10 bg-white/8 backdrop-blur-md text-apple-gray-400'
+      radius={16}
+      material={selected ? 'regular' : 'thin'}
+      tintOpacity={selected ? 0.22 : undefined}
+      className={`rounded-2xl border-2 transition-all duration-150 active:scale-95 select-none ${
+        selected ? 'border-white text-white' : 'border-white/10 text-apple-gray-400'
       }`}
     >
-      <span className="text-2xl">{emoji}</span>
-      <span className="text-[12px] font-medium leading-tight">{label}</span>
-    </button>
+      <div className="flex flex-col items-center justify-center gap-1.5 p-3 min-h-[76px]">
+        <span className="text-2xl">{emoji}</span>
+        <span className="text-[12px] font-medium leading-tight">{label}</span>
+      </div>
+    </GlassSurface>
   )
 }
