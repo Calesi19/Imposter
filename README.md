@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/icons/icon-192.png" width="96" alt="Imposter" />
+  <img src="docs/banner.webp" width="100%" alt="A manila case file stamped Top Secret beside a personnel file, with a black redaction bar peeled back to reveal: You are the Imposter." />
   <h1>Imposter</h1>
   <p>A party word game where one player doesn't know the secret word.</p>
 </div>
