@@ -9,9 +9,6 @@ import SetupScreen from './components/screens/SetupScreen.jsx'
 import WordRevealScreen from './components/screens/WordRevealScreen.jsx'
 import DiscussionScreen from './components/screens/DiscussionScreen.jsx'
 import RevealScreen from './components/screens/RevealScreen.jsx'
-import VotingScreen from './components/screens/VotingScreen.jsx'
-import ImposterGuessScreen from './components/screens/ImposterGuessScreen.jsx'
-import GameOverScreen from './components/screens/GameOverScreen.jsx'
 
 export default function App() {
   const { lang, setLang } = useLanguage()
@@ -24,10 +21,7 @@ export default function App() {
     SETUP: <SetupScreen state={state} actions={actions} />,
     REVEAL_SEQUENCE: <WordRevealScreen state={state} actions={actions} />,
     DISCUSSION: <DiscussionScreen state={state} actions={actions} />,
-    VOTING: <VotingScreen state={state} actions={actions} />,
     RESULT: <RevealScreen state={state} actions={actions} />,
-    IMPOSTER_GUESS: <ImposterGuessScreen state={state} actions={actions} />,
-    GAME_OVER: <GameOverScreen state={state} actions={actions} />,
   }
   const scene = state.phase === 'SETUP' && !coverOpen ? 'COVER' : state.phase
 

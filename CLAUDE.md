@@ -17,12 +17,12 @@ Single-page app with no router. `App.jsx` renders one full-screen component base
 **State machine** (`src/hooks/useGameState.js`) is the single source of truth. All game logic flows through it. Phases:
 
 ```
-SETUP → REVEAL_SEQUENCE → DISCUSSION → VOTING → RESULT → IMPOSTER_GUESS → GAME_OVER
+SETUP → REVEAL_SEQUENCE → DISCUSSION → RESULT
 ```
 
-From DISCUSSION, skipping the vote goes straight to RESULT, and RESULT then returns to SETUP. VOTING only leads to IMPOSTER_GUESS if the accused really is an Imposter; otherwise RESULT goes to GAME_OVER. The title screen (`CoverScreen`) is not a phase: `App.jsx` shows it once per load, in front of SETUP.
+Players vote in person, so the app has no voting phase: DISCUSSION goes straight to RESULT, and RESULT returns to SETUP. The title screen (`CoverScreen`) is not a phase: `App.jsx` shows it once per load, in front of SETUP.
 
-**Pure logic** (`src/utils/gameLogic.js`) — `pickWord`, `pickImposter`, `tallyVotes` — is stateless and separate from the hook. Votes are keyed by player index because names can repeat.
+**Pure logic** (`src/utils/gameLogic.js`) — `pickWord`, `pickImposter` — is stateless and separate from the hook.
 
 **Word data** (`src/data/words.js`, plus `_es` and `_pt`) exports `CATEGORIES` (object keyed by category ID). Each category has `label`, `emoji`, and `words[]`.
 
@@ -30,7 +30,7 @@ From DISCUSSION, skipping the vote goes straight to RESULT, and RESULT then retu
 
 **Screens** (`src/components/screens/`) are full-viewport components — one per game phase, plus `CoverScreen`.
 
-Settings (players, categories, imposter count, hints, language, sound) persist in `localStorage`. The game in progress is in-memory only — a page refresh resets it.
+Settings (players, categories, imposter count, hints, language) persist in `localStorage`. The game in progress is in-memory only — a page refresh resets it.
 
 ## Design system: The Classified Dossier
 
@@ -41,11 +41,10 @@ One case file on one lit desk. `src/index.css` holds the tokens (`@theme`), type
 Rules that protect the game or the layout:
 
 - **The Redaction Strip is the signature interaction.** A secret is visible only while it is held open; with `keepOpen` it stays off once dragged past 72%. It also works by holding Space or Enter, and by assistive-tech activation.
-- **Nothing may reveal a player's role.** Word and Imposter sheets share one layout, ink colour and set of sounds.
+- **Nothing may reveal a player's role.** Word and Imposter sheets share one layout and ink colour.
 - **Fixed bars go through `BottomBar`.** It portals to `<body>`, because the scene's `.deal-in` transform captures `position: fixed`.
 - **One `animation` per element.** `.stamp-slam` and `.thud` overwrite each other, so `.thud` goes on the sheet under the stamp.
 - **Textures are baked**, not live SVG filters. Regenerate them with `node scripts/make-textures.mjs` (needs `cwebp`).
-- **Sound is synthesised** in `src/utils/sound.js`, so there are no audio assets.
 
 ## PWA
 

@@ -445,20 +445,6 @@ main:focus {
   --ink: var(--color-ink-soft);
 }
 
-/* Low-key alternative route: a redacted bar that gives up its words. */
-.redacted-link {
-  display: block;
-  width: 100%;
-  min-height: 48px;
-  padding: 12px 10px;
-  border: 0;
-  background: transparent;
-  color: var(--color-desk-muted);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: rgb(172 160 133 / 0.5);
-}
-
 /* ---- The Redaction Strip (signature) ------------------------------- */
 .strip {
   --lift: 0;
@@ -865,7 +851,7 @@ main:focus {
   opacity: 0.4;
 }
 
-/* Typewriter keycaps: language and sound on the cover */
+/* Typewriter keycaps: language on the cover */
 .typekey {
   display: grid;
   place-items: center;
@@ -908,27 +894,6 @@ main:focus {
 
 .file-slot:disabled {
   opacity: 0.72;
-}
-
-/* ---- Word list on the last-chance sheet ---------------------------- */
-.word-option {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 46px;
-  padding: 8px 8px;
-  border: 0;
-  border-bottom: 1px dashed rgb(29 26 22 / 0.34);
-  background: transparent;
-  color: var(--color-ink);
-  text-align: left;
-  overflow-wrap: anywhere;
-}
-
-.word-option[aria-pressed='true'] {
-  background: var(--color-ink);
-  color: var(--color-paper);
 }
 
 .no-scrollbar {

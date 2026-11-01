@@ -3,7 +3,6 @@ import { CATEGORIES } from "../../data/words.js";
 import { CATEGORIES_ES } from "../../data/words_es.js";
 import { CATEGORIES_PT } from "../../data/words_pt.js";
 import { LanguageContext, t } from "../../i18n/index.js";
-import { sfx } from "../../utils/sound.js";
 import BottomBar from "../ui/BottomBar.jsx";
 import StampButton from "../ui/StampButton.jsx";
 import Polaroid, { PolaroidSlot } from "../ui/Polaroid.jsx";
@@ -21,7 +20,6 @@ export default function SetupScreen({ state, actions }) {
 
   function handleAdd() {
     if (!input.trim()) return;
-    sfx.key();
     actions.addPlayer(input);
     setInput("");
     inputRef.current?.focus();
@@ -29,16 +27,6 @@ export default function SetupScreen({ state, actions }) {
 
   function handleKeyDown(e) {
     if (e.key === "Enter") handleAdd();
-  }
-
-  function selectTab(id) {
-    sfx.paper();
-    setTab(id);
-  }
-
-  function stepImposters(next) {
-    sfx.detent();
-    actions.setImposterCount(next);
   }
 
   const missingPlayers = Math.max(0, MIN_PLAYERS - state.players.length);
@@ -81,7 +69,7 @@ export default function SetupScreen({ state, actions }) {
             id={`tab-${id}`}
             aria-selected={tab === id}
             aria-controls={`panel-${id}`}
-            onClick={() => selectTab(id)}
+            onClick={() => setTab(id)}
             className={`folder-tab min-h-[46px] min-w-0 flex-1 justify-center px-2.5 pb-1.5 pt-2 text-[0.8125rem] leading-none transition-[padding] duration-100 ${
               tab === id ? "pt-3" : "folder-tab-dark"
             }`}
@@ -123,10 +111,7 @@ export default function SetupScreen({ state, actions }) {
                 <Polaroid name={name} />
                 <button
                   type="button"
-                  onClick={() => {
-                    sfx.paper();
-                    actions.removePlayer(i);
-                  }}
+                  onClick={() => actions.removePlayer(i)}
                   aria-label={t(lang, "removeAgent", { name })}
                   className="absolute -right-2 -top-2 grid h-11 w-11 place-items-center"
                 >
@@ -186,7 +171,7 @@ export default function SetupScreen({ state, actions }) {
               <button
                 type="button"
                 className="console-key"
-                onClick={() => stepImposters(state.imposterCount - 1)}
+                onClick={() => actions.setImposterCount(state.imposterCount - 1)}
                 disabled={state.imposterCount <= 0}
                 aria-label={t(lang, "decrease")}
               >
@@ -195,7 +180,7 @@ export default function SetupScreen({ state, actions }) {
               <button
                 type="button"
                 className="console-key"
-                onClick={() => stepImposters(state.imposterCount + 1)}
+                onClick={() => actions.setImposterCount(state.imposterCount + 1)}
                 disabled={state.imposterCount >= 25}
                 aria-label={t(lang, "increase")}
               >

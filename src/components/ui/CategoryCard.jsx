@@ -1,4 +1,3 @@
-import { sfx } from '../../utils/sound.js'
 import { hashName, tiltFor } from '../../utils/motion.js'
 import Stamp from './Stamp.jsx'
 
@@ -6,10 +5,7 @@ export default function CategoryCard({ label, imageKey, selected, onToggle, stam
   return (
     <button
       type="button"
-      onClick={() => {
-        sfx[selected ? 'paper' : 'stamp']()
-        onToggle()
-      }}
+      onClick={onToggle}
       aria-pressed={selected}
       className="file-card select-none"
       style={{ '--tilt': tiltFor(hashName(imageKey), 1.6) }}

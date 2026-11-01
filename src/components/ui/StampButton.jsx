@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { sfx } from '../../utils/sound.js'
 import { reducedMotion } from '../../utils/motion.js'
 
 // Lets the ink land before the screen changes. Feedback is instant; the action
@@ -14,7 +13,6 @@ export default function StampButton({ children, onClick, disabled = false, tone 
 
   function handleClick() {
     if (slam) return
-    sfx.stamp()
     if (reducedMotion()) {
       onClick?.()
       return

@@ -1,5 +1,3 @@
-import { sfx } from '../../utils/sound.js'
-
 export default function ToggleSwitch({ checked, onChange, label }) {
   return (
     <button
@@ -8,10 +6,7 @@ export default function ToggleSwitch({ checked, onChange, label }) {
       aria-checked={checked}
       aria-label={label}
       className="toggle"
-      onClick={() => {
-        sfx.clack()
-        onChange()
-      }}
+      onClick={onChange}
     >
       <span className="toggle-collar" />
       <span className="toggle-bat" />

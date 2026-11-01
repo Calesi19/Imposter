@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { sfx } from '../../utils/sound.js'
 
 // How far the bar must travel to count as "read".
 const READ_AT = 0.72
@@ -50,7 +49,6 @@ export default function RedactionStrip({ children, barLabel, ariaLabel, keepOpen
     drag.current = { x: e.clientX, width: root.current.offsetWidth, read: false }
     setHeld(true)
     setTouched(true)
-    sfx.peel()
   }
 
   function handlePointerMove(e) {
@@ -68,7 +66,6 @@ export default function RedactionStrip({ children, barLabel, ariaLabel, keepOpen
   function holdFromKeyboard() {
     setHeld(true)
     setTouched(true)
-    sfx.peel()
     paint(1)
   }
 

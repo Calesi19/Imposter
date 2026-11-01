@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { sfx } from '../../utils/sound.js'
 
 const DEGREES_PER_STEP = 12
 const SWEEP_START = -150
@@ -26,7 +25,6 @@ export default function RotaryDial({ value, min = 0, max = 25, onChange, label }
     const clamped = Math.max(min, Math.min(max, next))
     if (clamped === current.current) return
     current.current = clamped
-    sfx.detent()
     onChange(clamped)
   }
 

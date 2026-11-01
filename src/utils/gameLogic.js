@@ -14,13 +14,3 @@ export function pickImposter(playerCount, imposterCount) {
   }
   return pool.slice(0, imposterCount)
 }
-
-export function tallyVotes(votes) {
-  const counts = {}
-  for (const suspect of Object.values(votes)) {
-    counts[suspect] = (counts[suspect] || 0) + 1
-  }
-  const maxVotes = Math.max(...Object.values(counts))
-  const tied = Object.keys(counts).filter(p => counts[p] === maxVotes)
-  return tied[Math.floor(Math.random() * tied.length)]
-}

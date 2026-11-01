@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { pickWord, pickImposter, tallyVotes } from '../utils/gameLogic.js'
+import { pickWord, pickImposter } from '../utils/gameLogic.js'
 import { CATEGORIES } from '../data/words.js'
 import { CATEGORIES_ES } from '../data/words_es.js'
 import { CATEGORIES_PT } from '../data/words_pt.js'
@@ -29,11 +29,6 @@ const initialState = {
   imposterIndices: [],
   activeRevealIndex: null,
   revealedPlayers: [],
-  votes: {},
-  currentVoterIndex: 0,
-  accusedIndex: null,
-  imposterCaught: false,
-  imposterGuessCorrect: null,
 }
 
 export function useGameState(lang = 'en') {
@@ -98,11 +93,6 @@ export function useGameState(lang = 'en') {
         imposterIndices,
         activeRevealIndex: null,
         revealedPlayers: [],
-        votes: {},
-        currentVoterIndex: 0,
-        accusedIndex: null,
-        imposterCaught: false,
-        imposterGuessCorrect: null,
       }
     })
   }
@@ -128,47 +118,8 @@ export function useGameState(lang = 'en') {
     setState(s => ({ ...s, phase: 'DISCUSSION' }))
   }
 
-  function startVoting() {
-    setState(s => ({ ...s, phase: 'VOTING', votes: {}, currentVoterIndex: 0 }))
-  }
-
-  // Votes are keyed by player index: two agents may share a name.
-  function castVote(suspectIndex) {
-    setState(s => {
-      const votes = { ...s.votes, [s.currentVoterIndex]: suspectIndex }
-      const nextVoterIndex = s.currentVoterIndex + 1
-      if (nextVoterIndex < s.players.length) {
-        return { ...s, votes, currentVoterIndex: nextVoterIndex }
-      }
-      const accusedIndex = Number(tallyVotes(votes))
-      return {
-        ...s,
-        votes,
-        accusedIndex,
-        imposterCaught: s.imposterIndices.includes(accusedIndex),
-        phase: 'RESULT',
-      }
-    })
-  }
-
   function revealImposter() {
     setState(s => ({ ...s, phase: 'RESULT' }))
-  }
-
-  function goToImposterGuess() {
-    setState(s => ({ ...s, phase: 'IMPOSTER_GUESS' }))
-  }
-
-  function goToGameOver() {
-    setState(s => ({ ...s, phase: 'GAME_OVER' }))
-  }
-
-  function submitImposterGuess(guess) {
-    setState(s => ({
-      ...s,
-      imposterGuessCorrect: guess === s.secretWord.word,
-      phase: 'GAME_OVER',
-    }))
   }
 
   function resetGame() {
@@ -193,12 +144,7 @@ export function useGameState(lang = 'en') {
       openReveal,
       closeReveal,
       startDiscussion,
-      startVoting,
-      castVote,
       revealImposter,
-      goToImposterGuess,
-      goToGameOver,
-      submitImposterGuess,
       resetGame,
     },
   }

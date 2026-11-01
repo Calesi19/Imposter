@@ -11,8 +11,8 @@
 1. **Setup** — Choose a category and enter player names.
 2. **Reveal** — Each player privately views the secret word. One player (the Imposter) sees a different word and doesn't know they're the odd one out.
 3. **Discussion** — Players take turns giving clues that prove they know the real word — without saying it outright.
-4. **Vote** — Everyone votes on who they think the Imposter is.
-5. **Result** — If caught, the Imposter gets one last chance to guess the real word and still win.
+4. **Accuse** — Argue it out and agree in person on who the Imposter is.
+5. **Declassify** — Drag the redaction bar off the file to reveal the Imposter.
 
 ## Install as a PWA
 

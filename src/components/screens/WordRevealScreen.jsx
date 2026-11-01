@@ -1,13 +1,12 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { LanguageContext, t } from '../../i18n/index.js'
-import { sfx } from '../../utils/sound.js'
 import Paperclip from '../ui/Paperclip.jsx'
 import Polaroid from '../ui/Polaroid.jsx'
 import RedactionStrip from '../ui/RedactionStrip.jsx'
 import Stamp from '../ui/Stamp.jsx'
 import StampButton from '../ui/StampButton.jsx'
 
-// Word and Imposter sheets share one ink, one layout and one sound, so nothing
+// Word and Imposter sheets share one ink and one layout, so nothing
 // about a player's phone gives their role away across the table.
 function wordSize(word) {
   return `min(5.25rem, ${Math.round(230 / Math.max(word.length, 1))}cqw)`
@@ -82,10 +81,7 @@ function FileSlot({ name, index, done, justSealed, onOpen, lang }) {
       type="button"
       className="file-slot"
       disabled={done}
-      onClick={() => {
-        sfx.paper()
-        onOpen()
-      }}
+      onClick={onOpen}
       aria-label={done ? `${name}: ${t(lang, 'sealed')}` : t(lang, 'fileOf', { name })}
     >
       <span className="folder-tab t-label px-4 pb-1 pt-1.5 text-[0.6875rem]">
@@ -117,7 +113,6 @@ function AbortButton({ onAbort, lang }) {
       onAbort()
       return
     }
-    sfx.clack()
     setArmed(true)
     timer.current = setTimeout(() => setArmed(false), 3000)
   }

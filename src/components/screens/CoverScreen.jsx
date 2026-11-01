@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { LanguageContext, t } from '../../i18n/index.js'
-import { isSoundEnabled, setSoundEnabled, sfx, startAmbient } from '../../utils/sound.js'
 import { reducedMotion } from '../../utils/motion.js'
 import Paperclip from '../ui/Paperclip.jsx'
 import Stamp from '../ui/Stamp.jsx'
@@ -17,26 +16,17 @@ const CASE_NUMBER = String(1000 + Math.floor(Math.random() * 9000))
 export default function CoverScreen({ onOpen }) {
   const { lang, setLang } = useContext(LanguageContext)
   const [opening, setOpening] = useState(false)
-  const [sound, setSound] = useState(isSoundEnabled)
   const timer = useRef(null)
 
   useEffect(() => () => clearTimeout(timer.current), [])
 
   function handleOpen() {
-    startAmbient()
-    sfx.paper()
     if (reducedMotion()) {
       onOpen()
       return
     }
     setOpening(true)
     timer.current = setTimeout(onOpen, 380)
-  }
-
-  function toggleSound() {
-    setSoundEnabled(!sound)
-    setSound(!sound)
-    sfx.clack()
   }
 
   return (
@@ -75,42 +65,22 @@ export default function CoverScreen({ onOpen }) {
         </div>
       </div>
 
-      <div className="flex items-end justify-between gap-3 px-1">
-        <div role="group" aria-label={t(lang, 'language')}>
-          <p className="t-label mb-2 text-desk-muted">{t(lang, 'language')}</p>
-          <div className="flex gap-2.5">
-            {LANGUAGES.map(({ code, name }) => (
-              <button
-                key={code}
-                type="button"
-                className="typekey"
-                lang={code}
-                aria-label={name}
-                aria-pressed={lang === code}
-                onClick={() => {
-                  sfx.key()
-                  setLang(code)
-                }}
-              >
-                {code.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="t-label mb-2 text-desk-muted">{t(lang, 'sound')}</p>
-          <button
-            type="button"
-            className="typekey ml-auto"
-            aria-label={t(lang, 'sound')}
-            aria-pressed={sound}
-            onClick={toggleSound}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor" />
-              {sound ? <path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12" /> : <path d="m17 9 5 6M22 9l-5 6" />}
-            </svg>
-          </button>
+      <div role="group" aria-label={t(lang, 'language')} className="px-1">
+        <p className="t-label mb-2 text-desk-muted">{t(lang, 'language')}</p>
+        <div className="flex gap-2.5">
+          {LANGUAGES.map(({ code, name }) => (
+            <button
+              key={code}
+              type="button"
+              className="typekey"
+              lang={code}
+              aria-label={name}
+              aria-pressed={lang === code}
+              onClick={() => setLang(code)}
+            >
+              {code.toUpperCase()}
+            </button>
+          ))}
         </div>
       </div>
 

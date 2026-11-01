@@ -38,7 +38,7 @@ export default function DiscussionScreen({ state, actions }) {
           {rules.map((rule, i) => (
             <li key={i} className="t-body flex gap-3">
               <span className="font-[family-name:var(--font-display)] text-[1.5rem] leading-none text-blood">{i + 1}.</span>
-              <Typewriter text={rule} delay={delays[i]} speed={11} sound className="min-w-0 flex-1" />
+              <Typewriter text={rule} delay={delays[i]} speed={11} className="min-w-0 flex-1" />
             </li>
           ))}
         </ol>
@@ -53,12 +53,7 @@ export default function DiscussionScreen({ state, actions }) {
         </ul>
       </article>
 
-      <div>
-        <StampButton onClick={actions.startVoting}>{t(lang, 'openBallot')}</StampButton>
-        <button type="button" onClick={actions.revealImposter} className="redacted-link mt-1 text-[0.9375rem]">
-          {t(lang, 'revealImposter')}
-        </button>
-      </div>
+      <StampButton onClick={actions.revealImposter}>{t(lang, 'revealImposter')}</StampButton>
     </div>
   )
 }
