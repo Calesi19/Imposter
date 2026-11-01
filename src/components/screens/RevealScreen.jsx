@@ -1,36 +1,97 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { LanguageContext, t } from '../../i18n/index.js'
-import Button from '../ui/Button.jsx'
+import { sfx } from '../../utils/sound.js'
+import Paperclip from '../ui/Paperclip.jsx'
+import Polaroid from '../ui/Polaroid.jsx'
+import RedactionStrip from '../ui/RedactionStrip.jsx'
+import Stamp from '../ui/Stamp.jsx'
+import StampButton from '../ui/StampButton.jsx'
 
 export default function RevealScreen({ state, actions }) {
   const { lang } = useContext(LanguageContext)
-  const { players, imposterIndices } = state
+  const { players, imposterIndices, accusedIndex, imposterCaught, votes } = state
+  const [declassified, setDeclassified] = useState(false)
+
   const imposterNames = imposterIndices.map(i => players[i])
+  const voted = accusedIndex !== null
+  const accusedVotes = Object.values(votes).filter(v => v === accusedIndex).length
+
+  useEffect(() => {
+    if (declassified) sfx.stamp()
+  }, [declassified])
+
+  const heading =
+    imposterNames.length === 1
+      ? t(lang, 'theImposterWas')
+      : imposterNames.length === 0
+        ? t(lang, 'noImposters')
+        : t(lang, 'theImpostersWere')
 
   return (
-    <div className="min-h-dvh min-h-screen flex flex-col items-center justify-center px-6">
-      <div className="w-full max-w-sm space-y-8 text-center">
+    <div
+      className="mx-auto flex min-h-dvh w-full max-w-[30rem] flex-col justify-center gap-5 px-4"
+      style={{ paddingTop: 'calc(26px + var(--safe-top))', paddingBottom: 'calc(20px + var(--safe-bottom))' }}
+    >
+      <article
+        className={`sheet sheet-stack on-paper relative isolate overflow-visible px-4 pb-6 pt-5 sm:px-6 ${declassified ? 'thud' : ''}`}
+      >
+        <Paperclip className="left-8 -top-4" />
+        <h1 className="t-h2 pl-9">{t(lang, 'caseResults')}</h1>
+        <div className="sheet-rule my-4" />
 
-        <div className="space-y-2">
-          <p className="text-apple-gray-400 dark:text-apple-gray-500 text-[13px] uppercase tracking-widest font-medium">
-            {imposterNames.length === 1
-              ? t(lang, 'theImposterWas')
-              : imposterNames.length === 0
-              ? t(lang, 'noImposters')
-              : t(lang, 'theImpostersWere')}
-          </p>
-          {imposterNames.length > 0 && (
-            <h2 className="text-[48px] font-semibold tracking-tight text-apple-red leading-none">
-              {imposterNames.join(' & ')}
-            </h2>
-          )}
+        {voted && (
+          <div className="mb-5 flex items-center gap-4">
+            <Polaroid name={players[accusedIndex]} showName={false} tilt="-3deg" className="w-24 flex-none" />
+            <div className="min-w-0 flex-1">
+              <p className="t-label text-ink-soft">{t(lang, 'accused')}</p>
+              <p className="t-h2 mt-1 break-words">{players[accusedIndex]}</p>
+              <p className="mt-1 text-[0.9375rem] tabular-nums text-ink-soft">
+                {t(lang, 'voteCount', { count: accusedVotes })}
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div className="relative">
+          <RedactionStrip
+            keepOpen
+            barLabel={t(lang, 'dragToDeclassify')}
+            ariaLabel={t(lang, 'declassifyLabel')}
+            onRead={() => setDeclassified(true)}
+            className="bg-paper-deep/40"
+          >
+            <span className="t-label text-ink-soft">{heading}</span>
+            {imposterNames.length > 0 && (
+              <span className="t-h1 mt-2 block break-words" style={{ fontSize: 'min(4rem, 17cqw)', lineHeight: 1 }}>
+                {imposterNames.join(' & ')}
+              </span>
+            )}
+          </RedactionStrip>
         </div>
 
-        <Button onClick={actions.resetGame}>
-          {t(lang, 'newRound')}
-        </Button>
+        {declassified && (
+          <div className="mt-4 flex justify-center">
+            <Stamp
+              slam
+              tilt={-4}
+              tone={voted && !imposterCaught ? 'olive' : 'blood'}
+              className="text-[2.5rem]"
+            >
+              {voted ? t(lang, imposterCaught ? 'guilty' : 'notGuilty') : t(lang, 'declassified')}
+            </Stamp>
+          </div>
+        )}
+      </article>
 
-      </div>
+      {declassified && (
+        <div className="deal-in">
+          {!voted && <StampButton onClick={actions.resetGame}>{t(lang, 'newRound')}</StampButton>}
+          {voted && imposterCaught && (
+            <StampButton onClick={actions.goToImposterGuess}>{t(lang, 'lastChanceAction')}</StampButton>
+          )}
+          {voted && !imposterCaught && <StampButton onClick={actions.goToGameOver}>{t(lang, 'closeCase')}</StampButton>}
+        </div>
+      )}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function detectLang() {
   const saved = localStorage.getItem('imposter_language')
@@ -9,6 +9,10 @@ function detectLang() {
 
 export function useLanguage() {
   const [lang, setLangState] = useState(detectLang)
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
 
   function setLang(l) {
     setLangState(l)

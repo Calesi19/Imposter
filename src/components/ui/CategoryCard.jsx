@@ -1,29 +1,30 @@
-export default function CategoryCard({ label, imageKey, selected, onToggle }) {
+import { sfx } from '../../utils/sound.js'
+import { hashName, tiltFor } from '../../utils/motion.js'
+import Stamp from './Stamp.jsx'
+
+export default function CategoryCard({ label, imageKey, selected, onToggle, stampLabel }) {
   return (
     <button
-      onClick={onToggle}
+      type="button"
+      onClick={() => {
+        sfx[selected ? 'paper' : 'stamp']()
+        onToggle()
+      }}
       aria-pressed={selected}
-      className={`relative overflow-hidden rounded-2xl border-2 min-h-[104px] text-left transition-all duration-150 active:scale-95 select-none ${
-        selected ? 'border-white' : 'border-white/10'
-      }`}
+      className="file-card select-none"
+      style={{ '--tilt': tiltFor(hashName(imageKey), 1.6) }}
     >
-      <img
-        src={`${import.meta.env.BASE_URL}categories/${imageKey}.webp`}
-        alt=""
-        draggable={false}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-150 ${
-          selected ? 'opacity-100' : 'opacity-75'
-        }`}
-      />
-      {/* Gradient that fades up from the corner, with a matching fading
-          blur, so the label stays readable over the photo. */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/85 via-black/35 to-transparent backdrop-blur-[2px] [mask-image:linear-gradient(to_top,black_45%,transparent)]"
-      />
-      <span className="absolute left-2.5 bottom-2 text-[13px] font-semibold leading-tight text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-        {label}
+      <span className="relative block overflow-hidden">
+        <img src={`${import.meta.env.BASE_URL}categories/${imageKey}.webp`} alt="" draggable={false} />
+        {selected && (
+          <span className="absolute inset-0 grid place-items-center bg-[rgb(239_234_219/0.3)]">
+            <Stamp slam tilt={-12} className="bg-[rgb(239_234_219/0.82)] text-[1.125rem]">
+              {stampLabel}
+            </Stamp>
+          </span>
+        )}
       </span>
+      <span className="block px-0.5 py-1.5 text-center text-[0.8125rem] leading-tight">{label}</span>
     </button>
   )
 }

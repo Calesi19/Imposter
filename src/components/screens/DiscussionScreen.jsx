@@ -1,38 +1,63 @@
 import { useContext } from 'react'
 import { LanguageContext, t } from '../../i18n/index.js'
-import Button from '../ui/Button.jsx'
-import GlassSurface from '../ui/GlassSurface.jsx'
+import Paperclip from '../ui/Paperclip.jsx'
+import Polaroid from '../ui/Polaroid.jsx'
+import StampButton from '../ui/StampButton.jsx'
+import Typewriter from '../ui/Typewriter.jsx'
 
 export default function DiscussionScreen({ state, actions }) {
   const { lang } = useContext(LanguageContext)
+  const rules = [t(lang, 'discussionRule1'), t(lang, 'discussionRule2'), t(lang, 'discussionRule3')]
+
+  // Each order starts once the one before has finished typing.
+  let typedChars = 0
+  const delays = rules.map(rule => {
+    const delay = 300 + typedChars * 15
+    typedChars += rule.length
+    return delay
+  })
 
   return (
-    <div className="min-h-dvh min-h-screen flex flex-col items-center justify-center px-6">
-      <div className="w-full max-w-sm space-y-8">
+    <div
+      className="mx-auto flex min-h-dvh w-full max-w-[30rem] flex-col justify-center gap-5 px-4 lg:max-w-[36rem]"
+      style={{ paddingTop: 'calc(26px + var(--safe-top))', paddingBottom: 'calc(16px + var(--safe-bottom))' }}
+    >
+      <article className="sheet sheet-stack on-paper relative isolate overflow-visible px-5 pb-6 pt-6 sm:px-7">
+        <Paperclip className="right-8 -top-4" />
+        <div className="coffee -left-16 -top-14 h-52 w-52 opacity-45" />
 
-        <div className="text-center space-y-2">
-          <h2 className="text-[34px] font-semibold tracking-tight text-apple-label dark:text-white">{t(lang, 'discussion')}</h2>
-          <p className="text-apple-gray-500 dark:text-apple-gray-400 text-[17px]">{t(lang, 'takeTurns')}</p>
+        <div className="relative">
+          <h1 className="t-h1">{t(lang, 'discussion')}</h1>
+          <p className="t-body mt-1 text-ink-soft">{t(lang, 'takeTurns')}</p>
         </div>
 
-        <div className="space-y-3">
-          {[
-            t(lang, 'discussionRule1'),
-            t(lang, 'discussionRule2'),
-            t(lang, 'discussionRule3'),
-          ].map((text, i) => (
-            <GlassSurface key={i} radius={16}>
-              <div className="flex gap-3 items-start rounded-2xl px-4 py-4">
-                <span className="text-apple-blue font-semibold text-[15px] mt-0.5 shrink-0">{i + 1}</span>
-                <p className="text-apple-label dark:text-white text-[15px] leading-snug">{text}</p>
-              </div>
-            </GlassSurface>
+        <div className="sheet-rule my-4" />
+
+        <h2 className="t-label mb-3">{t(lang, 'standingOrders')}</h2>
+        <ol className="space-y-3">
+          {rules.map((rule, i) => (
+            <li key={i} className="t-body flex gap-3">
+              <span className="font-[family-name:var(--font-display)] text-[1.5rem] leading-none text-blood">{i + 1}.</span>
+              <Typewriter text={rule} delay={delays[i]} speed={11} sound className="min-w-0 flex-1" />
+            </li>
           ))}
-        </div>
+        </ol>
 
-        <Button onClick={actions.revealImposter}>
+        <h2 className="t-label mb-3 mt-5">{t(lang, 'suspects')}</h2>
+        <ul className="no-scrollbar -mx-1 flex gap-2.5 overflow-x-auto px-1 pb-3 pt-1">
+          {state.players.map((name, i) => (
+            <li key={i} className="w-[5.5rem] flex-none">
+              <Polaroid name={name} />
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <div>
+        <StampButton onClick={actions.startVoting}>{t(lang, 'openBallot')}</StampButton>
+        <button type="button" onClick={actions.revealImposter} className="redacted-link mt-1 text-[0.9375rem]">
           {t(lang, 'revealImposter')}
-        </Button>
+        </button>
       </div>
     </div>
   )

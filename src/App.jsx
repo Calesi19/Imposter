@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react'
 import { useGameState } from './hooks/useGameState.js'
 import { useLanguage } from './hooks/useLanguage.js'
-import { useTheme } from './hooks/useTheme.js'
-import { ThemeContext } from './hooks/useTheme.js'
 import { LanguageContext } from './i18n/index.js'
+import Desk from './components/ui/Desk.jsx'
+import { MugshotDefs } from './components/ui/Polaroid.jsx'
+import CoverScreen from './components/screens/CoverScreen.jsx'
 import SetupScreen from './components/screens/SetupScreen.jsx'
 import WordRevealScreen from './components/screens/WordRevealScreen.jsx'
 import DiscussionScreen from './components/screens/DiscussionScreen.jsx'
@@ -13,10 +15,12 @@ import GameOverScreen from './components/screens/GameOverScreen.jsx'
 
 export default function App() {
   const { lang, setLang } = useLanguage()
-  const { theme, toggleTheme } = useTheme()
   const { state, actions } = useGameState(lang)
+  const [coverOpen, setCoverOpen] = useState(false)
+  const main = useRef(null)
 
   const screens = {
+    COVER: <CoverScreen onOpen={() => setCoverOpen(true)} />,
     SETUP: <SetupScreen state={state} actions={actions} />,
     REVEAL_SEQUENCE: <WordRevealScreen state={state} actions={actions} />,
     DISCUSSION: <DiscussionScreen state={state} actions={actions} />,
@@ -25,17 +29,28 @@ export default function App() {
     IMPOSTER_GUESS: <ImposterGuessScreen state={state} actions={actions} />,
     GAME_OVER: <GameOverScreen state={state} actions={actions} />,
   }
+  const scene = state.phase === 'SETUP' && !coverOpen ? 'COVER' : state.phase
+
+  // New paper, new start: top of the page, and focus moves with the player.
+  const firstScene = useRef(true)
+  useEffect(() => {
+    if (firstScene.current) {
+      firstScene.current = false
+      return
+    }
+    window.scrollTo(0, 0)
+    main.current?.focus({ preventScroll: true })
+  }, [scene])
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <LanguageContext.Provider value={{ lang, setLang }}>
-        <div className="min-h-screen bg-black sm:flex sm:justify-center">
-          <div className="bg-red-glow" />
-          <div className="w-full sm:max-w-sm sm:min-h-screen overflow-hidden relative" style={{ zIndex: 1 }}>
-            {screens[state.phase]}
-          </div>
+    <LanguageContext.Provider value={{ lang, setLang }}>
+      <MugshotDefs />
+      <Desk />
+      <main ref={main} tabIndex={-1} className="relative z-10 min-h-dvh">
+        <div key={scene} className="deal-in">
+          {screens[scene]}
         </div>
-      </LanguageContext.Provider>
-    </ThemeContext.Provider>
+      </main>
+    </LanguageContext.Provider>
   )
 }

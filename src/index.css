@@ -1,51 +1,61 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:is(.dark *));
-
+/* ------------------------------------------------------------------ *
+ * THE CLASSIFIED DOSSIER
+ * One case file on one lit desk. Colour roles are literal materials:
+ * desk (the room), manila and paper (the objects you handle), ink
+ * (what is typed), blood (what is stamped), brass (what is mechanical).
+ * ------------------------------------------------------------------ */
 @theme {
-  --color-apple-blue: #ffffff;
-  --color-apple-blue-hover: #e5e5e7;
-  --color-apple-red: #ff3b30;
-  --color-apple-green: #34c759;
+  --color-desk: #171411;
+  --color-desk-raised: #26201a;
+  --color-desk-text: #e0d5bb;
+  --color-desk-muted: #aca085;
 
-  --color-apple-gray-50: #f5f5f7;
-  --color-apple-gray-100: #e8e8ed;
-  --color-apple-gray-200: #d2d2d7;
-  --color-apple-gray-300: #aeaeb2;
-  --color-apple-gray-400: #8e8e93;
-  --color-apple-gray-500: #6e6e73;
-  --color-apple-gray-600: #48484a;
-  --color-apple-gray-700: #3a3a3c;
-  --color-apple-gray-800: #2c2c2e;
-  --color-apple-gray-900: #1c1c1e;
-  --color-apple-gray-950: #000000;
+  --color-manila: #c8a86b;
+  --color-manila-deep: #a07f45;
+  --color-manila-ink: #33270f;
 
-  --color-apple-label: #1d1d1f;
+  --color-paper: #e6dcc3;
+  --color-paper-deep: #d3c5a1;
 
-  --font-sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
-    'Helvetica Neue', Arial, sans-serif;
+  --color-ink: #1d1a16;
+  --color-ink-soft: #4b4435;
 
-  --tracking-tight: -0.022em;
-  --tracking-tighter: -0.03em;
+  --color-blood: #9c1c13;
+  --color-ember: #ef6a55;
+
+  --color-brass: #b4914b;
+  --color-brass-light: #e4c780;
+
+  --color-olive: #454a2a;
+  --color-olive-light: #c5c992;
+
+  --font-display: 'League Gothic', 'Arial Narrow', Impact, sans-serif;
+  --font-typed: 'Special Elite', 'Courier New', Courier, monospace;
 }
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+:root {
+  --tex-paper: url('./assets/textures/paper.webp');
+  --tex-manila: url('./assets/textures/manila.webp');
+  --tex-desk: url('./assets/textures/desk.webp');
+  --tex-steel: url('./assets/textures/steel.webp');
+  --tex-stamp: url('./assets/textures/stamp-ink.webp');
+  --tex-coffee: url('./assets/textures/coffee-ring.webp');
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
+  /* Motion language: mechanical. One easing family, things land and stop. */
+  --dur-state: 0.14s;
+  --dur-move: 0.32s;
+  --dur-scene: 0.46s;
+  --ease-land: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-lift: cubic-bezier(0.55, 0, 0.85, 0.3);
+
+  --shadow-sheet:
+    0 1px 0 rgb(255 255 255 / 0.25) inset,
+    0 2px 3px rgb(0 0 0 / 0.5),
+    0 14px 28px -8px rgb(0 0 0 / 0.75);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 * {
@@ -54,83 +64,941 @@
 }
 
 html {
-  background-color: #000000;
+  background-color: var(--color-desk);
+  scrollbar-color: var(--color-desk-muted) var(--color-desk);
 }
 
 body {
-  background-color: #000000;
-  color: #ffffff;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--color-desk);
+  color: var(--color-desk-text);
+  font-family: var(--font-typed);
+  font-synthesis: none;
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.neon-red {
-  color: #ffd5d5;
-  text-shadow:
-    0px 0px 4px #ffd5d5,
-    0px 0px 4px #ffd5d5,
-    0px 0px 4px #ffd5d5,
-    0px 0px 3px #ff3b30,
-    0px 3px 15px #ff3b30,
-    0px 0px 15px #ff3b30,
-    0px 0px 125px #ff3b30,
-    0px 0px 200px #cc0000,
-    0px 0px 200px #cc0000;
-}
-
-.bg-red-glow {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(
-    ellipse 100% 55% at 50% 100%,
-    rgba(180, 0, 0, 0.45) 0%,
-    rgba(120, 0, 0, 0.2) 45%,
-    transparent 70%
-  );
-  animation: bg-glow-wave 6s ease-in-out infinite;
-}
-
-@keyframes bg-glow-wave {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1) translate(0, 0);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2) translate(-4%, -4%);
-  }
-}
-
-.neon-flicker-slow {
-  animation: neon-flicker 3s linear infinite;
-}
-
-.neon-flicker-fast {
-  animation: neon-flicker 1s linear infinite;
-}
-
-@keyframes neon-flicker {
-  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
-    opacity: 0.99;
-  }
-  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
-    opacity: 0.4;
-  }
-}
-
 #root {
   min-height: 100dvh;
-  min-height: 100vh;
 }
 
 html,
 body,
 main {
   overscroll-behavior: none;
+}
+
+button,
+select,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brass-light);
+  outline-offset: 3px;
+}
+
+.on-paper :focus-visible {
+  outline-color: var(--color-blood);
+}
+
+main:focus {
+  outline: none;
+}
+
+/* ---- Type roles ---------------------------------------------------- */
+.t-display {
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 25vw, 8.5rem);
+  line-height: 0.86;
+  letter-spacing: 0.012em;
+  text-transform: uppercase;
+}
+
+.t-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.875rem, 13vw, 4.25rem);
+  line-height: 0.95;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.t-body {
+  font-size: 1rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.t-label {
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- The desk ------------------------------------------------------ */
+.desk {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--tex-desk) 0 0 / 360px;
+}
+
+.desk-lamp {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 70% at 50% 34%, rgb(255 206 128 / 0.2), rgb(255 190 100 / 0.07) 48%, transparent 74%);
+  animation: lamp-flicker 13s linear infinite;
+}
+
+.desk-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 95% 85% at 50% 40%, transparent 42%, rgb(0 0 0 / 0.62) 100%);
+}
+
+/* A worn bulb: long steady stretches, a couple of shallow dips. Never a flash. */
+@keyframes lamp-flicker {
+  0%, 41%, 43.4%, 46%, 47.5%, 80%, 81.2%, 100% { opacity: 1; }
+  42% { opacity: 0.78; }
+  46.6% { opacity: 0.86; }
+  80.6% { opacity: 0.9; }
+}
+
+.desk-ring {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  right: -96px;
+  bottom: 12%;
+  opacity: 0.26;
+  background: var(--tex-coffee) center / contain no-repeat;
+  filter: brightness(1.8);
+}
+
+.desk-prop {
+  position: absolute;
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  .desk-ring {
+    width: 300px;
+    height: 300px;
+    right: 6%;
+    bottom: 8%;
+    opacity: 0.32;
+  }
+
+  .desk-prop {
+    display: block;
+  }
+}
+
+/* ---- Paper objects ------------------------------------------------- */
+.sheet {
+  position: relative;
+  background: var(--color-paper) var(--tex-paper) 0 0 / 420px;
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sheet);
+  border-radius: 2px;
+}
+
+/* Sits one sheet under the top page, so paper reads as a stack. */
+.sheet-stack::before {
+  content: '';
+  position: absolute;
+  inset: 5px -4px -6px 3px;
+  z-index: -1;
+  background: var(--color-paper-deep) var(--tex-paper) 40px 90px / 420px;
+  transform: rotate(0.9deg);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.55);
+}
+
+.sheet-rule {
+  border-top: 2px solid var(--color-ink);
+  border-bottom: 1px solid var(--color-ink);
+  height: 5px;
+}
+
+.coffee {
+  position: absolute;
+  pointer-events: none;
+  background: var(--tex-coffee) center / contain no-repeat;
+}
+
+.punch-holes::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 7px;
+  width: 11px;
+  height: 11px;
+  margin-top: -62px;
+  border-radius: 50%;
+  background: var(--color-desk);
+  box-shadow:
+    inset 0 2px 2px rgb(0 0 0 / 0.8),
+    0 113px 0 var(--color-desk);
+}
+
+/* ---- Manila folder ------------------------------------------------- */
+.folder {
+  position: relative;
+  background: var(--color-manila) var(--tex-manila) 0 0 / 420px;
+  color: var(--color-manila-ink);
+  border-radius: 3px 6px 6px 6px;
+  box-shadow:
+    inset 0 1px 0 rgb(255 240 200 / 0.45),
+    inset 0 -2px 3px rgb(90 60 20 / 0.32),
+    0 2px 3px rgb(0 0 0 / 0.5),
+    0 18px 30px -10px rgb(0 0 0 / 0.8);
+}
+
+.folder-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  background: var(--color-manila) var(--tex-manila) 30px 0 / 420px;
+  color: var(--color-manila-ink);
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+}
+
+.folder-tab-dark {
+  filter: brightness(0.86);
+}
+
+/* ---- Cover -------------------------------------------------------- */
+.cover-flap {
+  transform-origin: 0 50%;
+  transition: transform var(--dur-scene) var(--ease-lift), opacity var(--dur-scene) linear;
+}
+
+.cover-wrap {
+  perspective: 1400px;
+}
+
+.is-opening .cover-flap {
+  transform: rotateY(-78deg);
+  opacity: 0;
+}
+
+/* ---- Rubber stamps ------------------------------------------------- */
+.stamp {
+  display: inline-block;
+  padding: 0.16em 0.5em 0.1em;
+  border: 0.09em solid currentColor;
+  outline: 0.035em solid currentColor;
+  outline-offset: 0.06em;
+  border-radius: 0.12em;
+  color: var(--color-blood);
+  font-family: var(--font-display);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: rotate(var(--tilt, -6deg));
+  -webkit-mask: var(--tex-stamp) center / 240px 120px;
+  mask: var(--tex-stamp) center / 240px 120px;
+}
+
+.stamp-olive {
+  color: var(--color-olive);
+}
+
+.stamp-brass {
+  color: var(--color-brass-light);
+}
+
+.stamp-slam {
+  animation: stamp-slam 0.26s var(--ease-land) both;
+  animation-delay: var(--slam-delay, 0s);
+}
+
+@keyframes stamp-slam {
+  0% {
+    transform: rotate(var(--tilt, -6deg)) scale(2.3);
+    opacity: 0;
+  }
+  55% {
+    transform: rotate(var(--tilt, -6deg)) scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--tilt, -6deg)) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Paper jumps when something heavy lands on it. */
+.thud {
+  animation: thud 0.2s linear both;
+  animation-delay: var(--slam-delay, 0.14s);
+}
+
+@keyframes thud {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(3px); }
+  70% { transform: translateY(-1px); }
+}
+
+/* The primary action: a stamped paper slip. */
+.stamp-button {
+  --ink: var(--color-blood);
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  border: 0;
+  background: var(--color-paper) var(--tex-paper) 120px 60px / 420px;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.35) inset, 0 2px 0 rgb(0 0 0 / 0.5), 0 10px 18px -6px rgb(0 0 0 / 0.8);
+  transition: transform var(--dur-state) var(--ease-land), box-shadow var(--dur-state) var(--ease-land);
+  user-select: none;
+}
+
+.stamp-button-olive {
+  --ink: var(--color-olive);
+}
+
+.stamp-button-ink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.14em 0.4em 0.06em;
+  border: 3px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform var(--dur-state) var(--ease-land);
+  -webkit-mask: var(--tex-stamp) center / 280px 140px;
+  mask: var(--tex-stamp) center / 280px 140px;
+}
+
+.stamp-button:not(:disabled):hover .stamp-button-ink {
+  transform: rotate(-0.8deg);
+}
+
+.stamp-button:not(:disabled):active,
+.stamp-button.is-slam {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.35) inset, 0 1px 0 rgb(0 0 0 / 0.5), 0 3px 6px -2px rgb(0 0 0 / 0.8);
+}
+
+.stamp-button.is-slam .stamp-button-ink {
+  animation: ink-land 0.22s var(--ease-land) both;
+}
+
+@keyframes ink-land {
+  0% { transform: scale(1.05); opacity: 0.35; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.stamp-button:disabled {
+  background: rgb(230 220 195 / 0.1);
+  box-shadow: inset 0 0 0 1px rgb(224 213 187 / 0.28);
+}
+
+.stamp-button:disabled .stamp-button-ink {
+  --ink: var(--color-desk-muted);
+  border-style: dashed;
+  border-width: 2px;
+  outline: none;
+}
+
+.on-paper .stamp-button:disabled {
+  background: rgb(29 26 22 / 0.05);
+  box-shadow: inset 0 0 0 1px rgb(29 26 22 / 0.25);
+}
+
+.on-paper .stamp-button:disabled .stamp-button-ink {
+  --ink: var(--color-ink-soft);
+}
+
+/* Low-key alternative route: a redacted bar that gives up its words. */
+.redacted-link {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--color-desk-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgb(172 160 133 / 0.5);
+}
+
+/* ---- The Redaction Strip (signature) ------------------------------- */
+.strip {
+  --lift: 0;
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  text-align: center;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: grab;
+}
+
+.strip.is-held {
+  cursor: grabbing;
+}
+
+.strip.is-open {
+  cursor: default;
+}
+
+.strip-secret {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 11.5rem;
+  padding: 1rem;
+  container-type: inline-size;
+}
+
+.strip-ink {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(calc(var(--lift) * 104%), 0, 0);
+  transition: transform 0.24s var(--ease-land);
+}
+
+.strip.is-held .strip-ink {
+  transition: none;
+  will-change: transform;
+}
+
+.strip-ink-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 14px;
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 0.13), transparent 7px),
+    linear-gradient(180deg, #0f0d0c, #1c1917 45%, #100e0d);
+  color: var(--color-desk-text);
+  box-shadow: -7px 0 12px rgb(0 0 0 / 0.42);
+}
+
+.strip-hint .strip-ink-face {
+  animation: strip-nudge 3.4s var(--ease-land) 1s infinite;
+}
+
+@keyframes strip-nudge {
+  0%, 62%, 100% { transform: translateX(0); }
+  70% { transform: translateX(22px); }
+  78% { transform: translateX(0); }
+}
+
+.strip-grip {
+  flex: none;
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  width: 54px;
+  color: var(--color-brass-light);
+  background: linear-gradient(90deg, #6f5a2c, var(--color-brass) 45%, #7d6632);
+  color: var(--color-ink);
+  box-shadow: inset -1px 0 0 rgb(0 0 0 / 0.4), inset 1px 0 0 rgb(255 240 200 / 0.4);
+}
+
+/* ---- Polaroids ----------------------------------------------------- */
+.polaroid {
+  position: relative;
+  display: block;
+  padding: 6% 6% 0;
+  background: #efeadb;
+  color: var(--color-ink);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 8px 12px -4px rgb(0 0 0 / 0.55);
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.polaroid-photo {
+  display: block;
+  aspect-ratio: 1;
+  background: #55524a;
+  overflow: hidden;
+}
+
+.polaroid-photo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.polaroid-name {
+  display: block;
+  padding: 5px 0 7px;
+  font-size: 0.8125rem;
+  line-height: 1.15;
+  text-align: center;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.polaroid-empty {
+  background: transparent;
+  box-shadow: none;
+  border: 1.5px dashed rgb(29 26 22 / 0.42);
+}
+
+.polaroid-empty .polaroid-photo {
+  background: rgb(29 26 22 / 0.07);
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+.clip {
+  position: absolute;
+  z-index: 2;
+  width: 22px;
+  height: 58px;
+  filter: drop-shadow(1px 2px 1px rgb(0 0 0 / 0.5));
+}
+
+/* ---- Word-file cards ----------------------------------------------- */
+.file-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 5px 5px 0;
+  border: 0;
+  background: #efeadb;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.45), 0 6px 10px -4px rgb(0 0 0 / 0.5);
+  color: var(--color-ink);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform var(--dur-state) var(--ease-land), box-shadow var(--dur-state) var(--ease-land);
+}
+
+.file-card:active {
+  transform: rotate(var(--tilt, 0deg)) scale(0.96);
+}
+
+.file-card[aria-pressed='true'] {
+  transform: rotate(0deg) translateY(-2px);
+  box-shadow: 0 0 0 2px var(--color-blood), 0 10px 14px -4px rgb(0 0 0 / 0.55);
+}
+
+.file-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  filter: grayscale(1) sepia(0.22) contrast(1.12) brightness(0.92);
+}
+
+/* ---- Typed form line ----------------------------------------------- */
+.typed-input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 2px 6px;
+  border: 0;
+  border-bottom: 2px solid var(--color-ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color var(--dur-state) linear, box-shadow var(--dur-state) linear;
+}
+
+.typed-input::placeholder {
+  color: var(--color-ink-soft);
+  opacity: 1;
+}
+
+.typed-input:focus {
+  border-bottom-color: var(--color-blood);
+  box-shadow: 0 2px 0 var(--color-blood);
+}
+
+.ink-button {
+  flex: none;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 8px 10px;
+  border: 2px solid var(--color-ink);
+  background: transparent;
+  color: var(--color-ink);
+  transition: transform var(--dur-state) var(--ease-land), background-color var(--dur-state) linear, color var(--dur-state) linear;
+}
+
+.ink-button:not(:disabled):active {
+  transform: scale(0.95);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.ink-button:disabled {
+  opacity: 0.45;
+}
+
+/* ---- Steel console ------------------------------------------------- */
+.console {
+  position: relative;
+  background: var(--color-olive) var(--tex-steel) 0 0 / 256px;
+  color: var(--color-paper);
+  border-radius: 5px;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.2),
+    inset 0 -2px 2px rgb(0 0 0 / 0.5),
+    0 2px 3px rgb(0 0 0 / 0.6),
+    0 14px 22px -8px rgb(0 0 0 / 0.7);
+}
+
+.rivet {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #cfd0ae, #5b5e3c 62%, #2a2c1a);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.6);
+}
+
+.engraved {
+  color: var(--color-olive-light);
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.55);
+}
+
+/* Bat-handle toggle */
+.toggle {
+  position: relative;
+  flex: none;
+  width: 66px;
+  height: 84px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: linear-gradient(160deg, #3a3a33, #1d1c18);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 2px 3px rgb(0 0 0 / 0.65);
+  perspective: 180px;
+}
+
+.toggle-collar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #8a8a78, #38382f 60%, #15140f);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.8);
+}
+
+.toggle-bat {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 16px;
+  height: 30px;
+  margin-left: -8px;
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(90deg, #6c6a5c, #f1ecd9 42%, #8f8c7b);
+  transform-origin: 50% 100%;
+  transform: rotateX(18deg);
+  box-shadow: 0 3px 3px rgb(0 0 0 / 0.5);
+  transition: transform 0.12s var(--ease-land), top 0.12s var(--ease-land);
+}
+
+.toggle[aria-checked='false'] .toggle-bat {
+  top: 42px;
+  border-radius: 4px 4px 8px 8px;
+  transform-origin: 50% 0;
+  transform: rotateX(-18deg);
+}
+
+.lamp-dot {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #5e2a24, #2a100d);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.5), 0 0 0 2px #1f1e19;
+  transition: background var(--dur-state) linear, box-shadow var(--dur-state) linear;
+}
+
+.lamp-dot.is-on {
+  background: radial-gradient(circle at 40% 35%, #ffb09c, #e23a22 55%, #8c1a0d);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.3), 0 0 0 2px #1f1e19, 0 0 12px 2px rgb(240 70 40 / 0.6);
+}
+
+/* Rotary dial */
+.dial {
+  position: relative;
+  width: min(58vw, 216px);
+  aspect-ratio: 1;
+  flex: none;
+  touch-action: none;
+  border-radius: 50%;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.dial:active {
+  cursor: grabbing;
+}
+
+.dial-scale {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.dial-knob {
+  position: absolute;
+  inset: 21%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(#8e7238 0 5deg, #e0c27a 5deg 10deg);
+  box-shadow: 0 3px 2px rgb(0 0 0 / 0.65), 0 12px 16px -2px rgb(0 0 0 / 0.65);
+  transform: rotate(var(--turn, 0deg));
+  transition: transform 0.1s var(--ease-land);
+}
+
+.dial-knob::before {
+  content: '';
+  position: absolute;
+  inset: 7%;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #8a6f38, #f1dca1, #93773b, #e7cd8c, #7e6532, #e8d08f, #8a6f38);
+  box-shadow: inset 0 1px 2px rgb(255 245 215 / 0.65), inset 0 -2px 3px rgb(0 0 0 / 0.5);
+}
+
+.dial-knob::after {
+  content: '';
+  position: absolute;
+  top: 9%;
+  left: 50%;
+  width: 6px;
+  height: 22%;
+  margin-left: -3px;
+  border-radius: 3px;
+  background: var(--color-blood);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.45);
+}
+
+.dial-window {
+  position: absolute;
+  inset: 41%;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: var(--color-paper);
+  box-shadow: inset 0 2px 3px rgb(0 0 0 / 0.6), 0 0 0 2px #2a2518;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 2.125rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.console-key {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, #4a4639, #1b1914 70%);
+  color: var(--color-paper);
+  font-size: 1.5rem;
+  box-shadow: inset 0 0 0 2px #8a8a78, 0 3px 0 #0d0c09, 0 6px 8px rgb(0 0 0 / 0.5);
+  transition: transform var(--dur-state) var(--ease-land), box-shadow var(--dur-state) var(--ease-land);
+}
+
+.console-key:not(:disabled):active {
+  transform: translateY(3px);
+  box-shadow: inset 0 0 0 2px #8a8a78, 0 0 0 #0d0c09, 0 2px 3px rgb(0 0 0 / 0.5);
+}
+
+.console-key:disabled {
+  opacity: 0.4;
+}
+
+/* Typewriter keycaps: language and sound on the cover */
+.typekey {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 32%, #3c352a, #15120e 72%);
+  color: var(--color-paper);
+  font-size: 0.875rem;
+  box-shadow: inset 0 0 0 2px #a99a78, 0 3px 0 #000, 0 5px 7px rgb(0 0 0 / 0.5);
+  transition: transform var(--dur-state) var(--ease-land), box-shadow var(--dur-state) var(--ease-land);
+}
+
+.typekey:active,
+.typekey[aria-pressed='true'] {
+  transform: translateY(2px);
+  box-shadow: inset 0 0 0 2px var(--color-brass-light), 0 1px 0 #000, 0 2px 3px rgb(0 0 0 / 0.5);
+}
+
+.typekey[aria-pressed='true'] {
+  background: radial-gradient(circle at 42% 32%, #b23a2b, #6e150d 72%);
+}
+
+/* ---- Personnel folders on the reveal roster ------------------------ */
+.file-slot {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  transition: transform var(--dur-state) var(--ease-land), opacity var(--dur-move) linear;
+}
+
+.file-slot:not(:disabled):active {
+  transform: translateY(2px) scale(0.98);
+}
+
+.file-slot:disabled {
+  opacity: 0.72;
+}
+
+/* ---- Word list on the last-chance sheet ---------------------------- */
+.word-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 8px;
+  border: 0;
+  border-bottom: 1px dashed rgb(29 26 22 / 0.34);
+  background: transparent;
+  color: var(--color-ink);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.word-option[aria-pressed='true'] {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- Scene change: the next paper is dealt onto the desk ----------- */
+.deal-in {
+  animation: deal-in var(--dur-scene) var(--ease-land) both;
+}
+
+@keyframes deal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0) rotate(1.4deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  padding: 10px 14px calc(14px + var(--safe-bottom));
+  background: linear-gradient(to top, var(--color-desk) 62%, rgb(23 20 17 / 0));
+}
+
+.bottom-bar .stamp-button:disabled {
+  background: var(--color-desk-raised);
+}
+
+.caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: caret 0.8s steps(1) infinite;
+}
+
+@keyframes caret {
+  50% { opacity: 0; }
+}
+
+/* Motion off: every state still lands, it just arrives without travel. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .desk-lamp {
+    animation: none;
+  }
+
+  .strip-hint .strip-ink-face {
+    animation: none;
+  }
 }

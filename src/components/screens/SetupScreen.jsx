@@ -1,232 +1,238 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { CATEGORIES } from "../../data/words.js";
 import { CATEGORIES_ES } from "../../data/words_es.js";
 import { CATEGORIES_PT } from "../../data/words_pt.js";
 import { LanguageContext, t } from "../../i18n/index.js";
-import Button from "../ui/Button.jsx";
-import PlayerChip from "../ui/PlayerChip.jsx";
+import { sfx } from "../../utils/sound.js";
+import BottomBar from "../ui/BottomBar.jsx";
+import StampButton from "../ui/StampButton.jsx";
+import Polaroid, { PolaroidSlot } from "../ui/Polaroid.jsx";
 import CategoryCard from "../ui/CategoryCard.jsx";
-import GlassSurface from "../ui/GlassSurface.jsx";
+import RotaryDial from "../ui/RotaryDial.jsx";
+import ToggleSwitch from "../ui/ToggleSwitch.jsx";
+
+const MIN_PLAYERS = 3;
 
 export default function SetupScreen({ state, actions }) {
-  const { lang, setLang } = useContext(LanguageContext);
+  const { lang } = useContext(LanguageContext);
   const [input, setInput] = useState("");
+  const [tab, setTab] = useState("agents");
+  const inputRef = useRef(null);
 
   function handleAdd() {
     if (!input.trim()) return;
+    sfx.key();
     actions.addPlayer(input);
     setInput("");
+    inputRef.current?.focus();
   }
 
   function handleKeyDown(e) {
     if (e.key === "Enter") handleAdd();
   }
 
-  const canStart =
-    state.players.length >= 3 && state.selectedCategories.length >= 1;
+  function selectTab(id) {
+    sfx.paper();
+    setTab(id);
+  }
+
+  function stepImposters(next) {
+    sfx.detent();
+    actions.setImposterCount(next);
+  }
+
+  const missingPlayers = Math.max(0, MIN_PLAYERS - state.players.length);
+  const canStart = missingPlayers === 0 && state.selectedCategories.length >= 1;
   const categories =
     lang === "es" ? CATEGORIES_ES : lang === "pt" ? CATEGORIES_PT : CATEGORIES;
 
-  return (
-    <div className="min-h-dvh flex flex-col">
-      <div className="flex-1 overflow-y-auto px-5 pt-14 pb-32 space-y-8">
-        <div>
-          <div className="flex justify-between items-center">
-            <h1 className="text-[34px] font-semibold tracking-tight">
-              {t(lang, "title").split('').map((char, i) => (
-                <span
-                  key={i}
-                  className={`neon-red${i === 4 ? ' neon-flicker-slow' : i === 7 ? ' neon-flicker-fast' : ''}`}
-                >
-                  {char}
-                </span>
-              ))}
-            </h1>
-            <div className="flex items-center gap-3 text-white">
-              <div className="relative flex items-center gap-1.5">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="pointer-events-none shrink-0"
-                >
-                  <path d="m5 8 6 6" />
-                  <path d="m4 14 6-6 2-3" />
-                  <path d="M2 5h12" />
-                  <path d="M7 2h1" />
-                  <path d="m22 22-5-10-5 10" />
-                  <path d="M14 18h6" />
-                </svg>
-                <span className="text-[15px] font-semibold pointer-events-none">
-                  {lang.toUpperCase()}
-                </span>
-                <select
-                  value={lang}
-                  onChange={(e) => setLang(e.target.value)}
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                >
-                  <option value="en">English</option>
-                  <option value="es">Español</option>
-                  <option value="pt">Português</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <p className="text-apple-gray-500 dark:text-apple-gray-400 mt-1 text-[15px]">
-            {t(lang, "subtitle")}
-          </p>
-        </div>
+  const tabs = [
+    { id: "agents", label: t(lang, "players"), count: state.players.length },
+    { id: "files", label: t(lang, "filesTab"), count: state.selectedCategories.length },
+    { id: "protocol", label: t(lang, "options"), count: state.imposterCount },
+  ];
 
-        {/* Players */}
-        <section className="space-y-3">
-          <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
-            {t(lang, "players")}
-          </h2>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={t(lang, "addPlayerPlaceholder")}
-              maxLength={20}
-              className="flex-1 bg-white/8 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 text-white text-[17px] placeholder-apple-gray-600 outline-hidden focus:border-white/30 transition-colors"
-            />
-            <button
-              onClick={handleAdd}
-              disabled={!input.trim()}
-              className="bg-white text-black px-5 rounded-xl font-medium text-[17px] disabled:opacity-40 active:scale-95 transition-all"
-            >
+  const blocker =
+    missingPlayers > 0
+      ? { tab: "agents", text: t(lang, "moreAgents", { count: missingPlayers }) }
+      : state.selectedCategories.length === 0
+        ? { tab: "files", text: t(lang, "minThemeHint") }
+        : null;
+
+  const panelClass = (id) =>
+    `sheet on-paper min-h-[24rem] p-4 sm:p-5 lg:block ${tab === id ? "block" : "hidden"}`;
+
+  return (
+    <div
+      className="mx-auto w-full max-w-[30rem] px-3 lg:max-w-[76rem] lg:px-8"
+      style={{ paddingTop: "calc(14px + var(--safe-top))", paddingBottom: "calc(150px + var(--safe-bottom))" }}
+    >
+      <header className="mb-3 flex items-baseline justify-between gap-3 px-1">
+        <h1 className="t-h2 text-desk-text">{t(lang, "operationBrief")}</h1>
+        <p className="t-label text-desk-muted">{t(lang, "title")}</p>
+      </header>
+
+      <div role="tablist" aria-label={t(lang, "operationBrief")} className="flex items-end gap-0.5 pl-1 lg:hidden">
+        {tabs.map(({ id, label, count }) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            id={`tab-${id}`}
+            aria-selected={tab === id}
+            aria-controls={`panel-${id}`}
+            onClick={() => selectTab(id)}
+            className={`folder-tab min-h-[46px] min-w-0 flex-1 justify-center px-2.5 pb-1.5 pt-2 text-[0.8125rem] leading-none transition-[padding] duration-100 ${
+              tab === id ? "pt-3" : "folder-tab-dark"
+            }`}
+          >
+            <span className="truncate">{label}</span>
+            <span className="tabular-nums opacity-80">{count}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="folder p-2 pb-3 lg:grid lg:grid-cols-[1fr_1fr_0.98fr] lg:gap-4 lg:p-4">
+        {/* Agents */}
+        <section id="panel-agents" role="tabpanel" aria-labelledby="tab-agents" className={panelClass("agents")}>
+          <h2 className="t-h2 mb-3">{t(lang, "players")}</h2>
+          <div className="flex items-end gap-2">
+            <label className="min-w-0 flex-1">
+              <span className="sr-only">{t(lang, "addPlayerPlaceholder")}</span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={t(lang, "addPlayerPlaceholder")}
+                maxLength={20}
+                enterKeyHint="done"
+                autoComplete="off"
+                className="typed-input"
+              />
+            </label>
+            <button type="button" onClick={handleAdd} disabled={!input.trim()} className="ink-button t-label">
               {t(lang, "add")}
             </button>
           </div>
-          {state.players.length > 0 ? (
-            <div className="flex flex-wrap gap-2 pt-1">
-              {state.players.map((name, i) => (
-                <PlayerChip
-                  key={i}
-                  name={name}
-                  onRemove={() => actions.removePlayer(i)}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="text-apple-gray-600 text-[13px]">
-              {t(lang, "minPlayersHint")}
-            </p>
-          )}
+
+          <ul className="mt-5 grid grid-cols-3 gap-x-3 gap-y-4">
+            {state.players.map((name, i) => (
+              <li key={`${name}-${i}`} className="relative deal-in">
+                <Polaroid name={name} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    sfx.paper();
+                    actions.removePlayer(i);
+                  }}
+                  aria-label={t(lang, "removeAgent", { name })}
+                  className="absolute -right-2 -top-2 grid h-11 w-11 place-items-center"
+                >
+                  <span aria-hidden="true" className="grid h-6 w-6 place-items-center rounded-full bg-ink text-[1rem] leading-none text-paper shadow-md">
+                    ×
+                  </span>
+                </button>
+              </li>
+            ))}
+            {Array.from({ length: missingPlayers }, (_, i) => (
+              <li key={`slot-${i}`}>
+                <PolaroidSlot label={t(lang, "photoPending")} />
+              </li>
+            ))}
+          </ul>
+          {missingPlayers > 0 && <p className="t-body mt-4 text-ink-soft">{t(lang, "minPlayersHint")}</p>}
         </section>
 
-        {/* Categories */}
-        <section className="space-y-3">
-          <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
-            {t(lang, "wordThemes")}
-          </h2>
-          <div className="grid grid-cols-3 gap-2">
+        {/* Word files */}
+        <section id="panel-files" role="tabpanel" aria-labelledby="tab-files" className={panelClass("files")}>
+          <h2 className="t-h2 mb-3">{t(lang, "wordThemes")}</h2>
+          <div className="grid grid-cols-3 gap-2.5">
             {Object.entries(categories).map(([key, cat]) => (
               <CategoryCard
                 key={key}
                 label={cat.label}
                 imageKey={key}
+                stampLabel={t(lang, "assigned")}
                 selected={state.selectedCategories.includes(key)}
                 onToggle={() => actions.toggleCategory(key)}
               />
             ))}
           </div>
           {state.selectedCategories.length === 0 && (
-            <p className="text-apple-gray-600 text-[13px]">
-              {t(lang, "minThemeHint")}
-            </p>
+            <p className="t-body mt-4 text-ink-soft">{t(lang, "minThemeHint")}</p>
           )}
         </section>
 
-        {/* Imposters */}
-        <section className="space-y-3">
-          <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
-            {t(lang, "imposters")}
-          </h2>
-          <GlassSurface radius={16}>
-            <div className="rounded-2xl px-4 py-3 flex items-center justify-between">
-            <span className="text-white text-[17px]">
-              {t(lang, "numberOfImposters")}
-            </span>
-            <div className="flex items-center gap-3">
+        {/* Protocol: the steel console */}
+        <section id="panel-protocol" role="tabpanel" aria-labelledby="tab-protocol" className={panelClass("protocol")}>
+          <h2 className="t-h2 mb-3">{t(lang, "options")}</h2>
+          <div className="console p-5">
+            <span className="rivet left-2 top-2" />
+            <span className="rivet right-2 top-2" />
+            <span className="rivet bottom-2 left-2" />
+            <span className="rivet bottom-2 right-2" />
+
+            <p className="t-label engraved text-center">{t(lang, "numberOfImposters")}</p>
+            <div className="mt-3 flex justify-center">
+              <RotaryDial
+                value={state.imposterCount}
+                onChange={actions.setImposterCount}
+                label={t(lang, "numberOfImposters")}
+              />
+            </div>
+            <div className="-mt-11 flex justify-between">
               <button
-                onClick={() =>
-                  actions.setImposterCount(state.imposterCount - 1)
-                }
+                type="button"
+                className="console-key"
+                onClick={() => stepImposters(state.imposterCount - 1)}
                 disabled={state.imposterCount <= 0}
-                className="w-8 h-8 rounded-full bg-white/8 flex items-center justify-center text-white text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
-                aria-label="Decrease imposter count"
+                aria-label={t(lang, "decrease")}
               >
                 −
               </button>
-              <span className="text-white text-[20px] font-semibold w-6 text-center select-none">
-                {state.imposterCount}
-              </span>
               <button
-                onClick={() =>
-                  actions.setImposterCount(state.imposterCount + 1)
-                }
+                type="button"
+                className="console-key"
+                onClick={() => stepImposters(state.imposterCount + 1)}
                 disabled={state.imposterCount >= 25}
-                className="w-8 h-8 rounded-full bg-white/8 flex items-center justify-center text-white text-[20px] font-medium disabled:opacity-30 active:scale-95 transition-all select-none"
-                aria-label="Increase imposter count"
+                aria-label={t(lang, "increase")}
               >
                 +
               </button>
             </div>
-            </div>
-          </GlassSurface>
-        </section>
 
-        {/* Options */}
-        <section className="space-y-3">
-          <h2 className="text-[13px] font-semibold uppercase tracking-widest text-apple-gray-500">
-            {t(lang, "options")}
-          </h2>
-          <GlassSurface radius={16}>
-            <div className="rounded-2xl px-4 py-3 flex items-center justify-between">
-            <div>
-              <p className="text-white text-[17px]">
-                {t(lang, "imposterHints")}
-              </p>
-              <p className="text-apple-gray-500 text-[13px] mt-0.5">
-                {t(lang, "imposterHintsDesc")}
-              </p>
-            </div>
-            <button
-              onClick={actions.toggleShowHints}
-              role="switch"
-              aria-checked={state.showHints}
-              className={`relative w-[51px] h-[31px] rounded-full transition-colors duration-200 focus:outline-hidden shrink-0 ml-4 ${
-                state.showHints
-                  ? "bg-[#8B0000]"
-                  : "bg-apple-gray-700"
-              }`}
-            >
-              <span
-                className={`absolute top-[2px] left-[2px] w-[27px] h-[27px] bg-white rounded-full shadow-xs transition-transform duration-200 ${
-                  state.showHints ? "translate-x-[20px]" : "translate-x-0"
-                }`}
+            <div className="mt-5 flex items-center gap-4 border-t border-black/40 pt-4">
+              <div className="min-w-0 flex-1">
+                <p className="t-label engraved">{t(lang, "imposterHints")}</p>
+                <p className="mt-1 text-[0.9375rem] leading-snug text-paper">{t(lang, "imposterHintsDesc")}</p>
+              </div>
+              <span className={`lamp-dot ${state.showHints ? "is-on" : ""}`} aria-hidden="true" />
+              <ToggleSwitch
+                checked={state.showHints}
+                onChange={actions.toggleShowHints}
+                label={t(lang, "imposterHints")}
               />
-            </button>
             </div>
-          </GlassSurface>
+          </div>
         </section>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-xl">
-        <div className="max-w-sm mx-auto px-5 pb-10 pt-4">
-          <Button onClick={actions.startGame} disabled={!canStart}>
+      <BottomBar className="lg:max-w-md">
+          {blocker && (
+            <button
+              type="button"
+              onClick={() => setTab(blocker.tab)}
+              className="mb-1 block min-h-[32px] w-full text-center text-[0.9375rem] text-desk-text underline decoration-desk-muted underline-offset-4 lg:no-underline"
+            >
+              {blocker.text}
+            </button>
+          )}
+          <StampButton onClick={actions.startGame} disabled={!canStart}>
             {t(lang, "startGame")}
-          </Button>
-        </div>
-      </div>
+          </StampButton>
+      </BottomBar>
     </div>
   );
 }

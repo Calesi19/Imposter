@@ -7,7 +7,7 @@ export const LanguageContext = createContext({ lang: 'en', setLang: () => {} })
 
 export function t(lang, key, vars = {}) {
   const strings = lang === 'es' ? es : lang === 'pt' ? pt : en
-  let str = strings[key] ?? key
+  let str = (vars.count === 1 && strings[`${key}_one`]) || strings[key] || key
   for (const [k, v] of Object.entries(vars)) {
     str = str.replace(`{{${k}}}`, String(v))
   }
